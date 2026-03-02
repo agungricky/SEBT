@@ -22,10 +22,8 @@
                     </p>
                     <div id="formulaKanan" class="fs-5"></div>
             </div>
-
         </div>
 
-    <!-- HASIL AKHIR -->
     <div id="hasilComposite" class="mt-4 text-center"></div>
 
 </div>

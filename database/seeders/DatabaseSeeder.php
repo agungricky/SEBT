@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\akun;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,16 +17,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $akun = akun::create([
             'username' => 'admin',
             'password' => Hash::make('admin'),
             'role' => 'admin',
+        ]);
+
+        User::create([
             'nama' => 'Administrator',
             'umur' => 25,
             'jk' => 'L',
             'institusi' => 'Admin University',
             'panjang_tungkai' => 0.0,
             'keterangan' => null,
+            'akun_id' => $akun->id,
         ]);
     }
 }

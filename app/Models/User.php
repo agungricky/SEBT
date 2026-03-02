@@ -18,9 +18,6 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'username',
-        'password',
-        'role',
         'nama',
         'umur',
         'jk',
@@ -50,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function tes()
+    {
+        return $this->hasMany(tes::class);
     }
 }
