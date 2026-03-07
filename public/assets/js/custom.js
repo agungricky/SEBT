@@ -57,6 +57,7 @@ let normalisasi = new Array(16).fill(0);
 let maxKananGlobal = [];
 let maxKiriGlobal = [];
 let hasilNormalisasi = [];
+let formData = {};
 
 $(document).ready(function () {
     var firebaseConfig = {
@@ -169,7 +170,7 @@ $(document).ready(function () {
 
         // ======================= Button Pengujian di Jalankan ======================= //
         $('#runTest').click(function () {
-            let formData = {
+            formData = {
                 nama: $('#nama').val(),
                 umur: $('#umur').val(),
                 jenis_kelamin: $('#jenis_kelamin').val(),
@@ -947,13 +948,14 @@ $(document).ready(function () {
                 method: 'POST',
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content'),
-                    nama: $('#nama').val(),
-                    umur: $('#umur').val(),
-                    jenis_kelamin: $('#jenis_kelamin').val(),
-                    institusi: $('#institusi').val(),
-                    panjang_tungkai: $('#panjang_tungkai').val(),
-                    keterangan: $('#keterangan').val(),
+                    // nama: $('#nama').val(),
+                    // umur: $('#umur').val(),
+                    // jenis_kelamin: $('#jenis_kelamin').val(),
+                    // institusi: $('#institusi').val(),
+                    // panjang_tungkai: $('#panjang_tungkai').val(),
+                    // keterangan: $('#keterangan').val(),
                     tanggal: new Date().toISOString(),
+                    Data_diri: formData,
 
                     kanan: nilai_kanan,
                     kiri: nilai_kiri,

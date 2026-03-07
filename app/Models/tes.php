@@ -10,6 +10,8 @@ class tes extends Model
 
     protected $fillable = [
         'tanggal_tes',
+        'a_ka',
+        'a_ki',
         'user_id',
     ];
 

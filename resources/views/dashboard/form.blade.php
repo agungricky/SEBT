@@ -18,6 +18,7 @@
                                     <input type="text" name="nama" id="nama"
                                         class="form-control form-control-sm" placeholder="Masukkan nama lengkap"
                                         required>
+                                    <div id="suggestion-box" class="list-group position-absolute" style="width: 250px"></div>
                                 </div>
                             </div>
 
@@ -106,7 +107,52 @@
 @push('scripts')
     <script>
         window.appConfig = {
-            jeda: {{ Cache::get('jeda_waktu', 5000) }}
+            jeda: {{ Cache::get('jeda_waktu', 5) }}
         };
+
+        $('#nama').on('keyup', function() {
+
+            let keyword = $(this).val();
+
+            if (keyword.length < 2) {
+                $('#suggestion-box').empty();
+                return;
+            }
+
+            $.ajax({
+                url: '/user',
+                type: 'GET',
+                data: {
+                    q: keyword
+                },
+                success: function(data) {
+
+                    let box = $('#suggestion-box');
+                    box.empty();
+
+                    data.forEach(function(user) {
+                        box.append(`
+                    <a href="#" class="list-group-item list-group-item-action pilih-user"
+                        data-id="${user.id}"
+                        data-nama="${user.nama}">
+                        ${user.nama}
+                    </a>
+                `);
+                    });
+
+                }
+            });
+
+        });
+
+        // klik salah satu nama
+        $(document).on('click', '.pilih-user', function(e) {
+            e.preventDefault();
+
+            let nama = $(this).data('nama');
+            $('#nama').val(nama);
+
+            $('#suggestion-box').empty();
+        });
     </script>
 @endpush
