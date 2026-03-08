@@ -1,9 +1,6 @@
-<div class="mb-5">
-    <h3 class="text-lg font-semibold text-gray-800 mb-1 text-bold">Hasil Pengujian</h3>
-    <p class="text-gray-500 text-sm">Data hasil pengujian Kaki Kanan</p>
-
+<div class="mb-4" id="target">
     <div class="table-responsive" id="data">
-        <table class="table table-bordered table-hover text-center align-middle w-100 mb-0">
+        <table class="table foot-table table-hover text-center align-middle w-100 mb-3">
             <thead class="table-primary">
                 <tr>
                     <th>Anterior (A)</th>
@@ -53,8 +50,7 @@
             </tbody>
         </table>
 
-        <p class="text-gray-500 text-sm mt-3">Data hasil pengujian Kaki Kiri</p>
-        <table class="table table-bordered table-hover text-center align-middle w-100 mb-0">
+        <table class="table foot-table table-hover text-center align-middle w-100">
             <thead class="table-primary">
                 <tr>
                     <th>Anterior (A)</th>
@@ -69,7 +65,7 @@
             </thead>
 
             <tbody id="timerBody_kiri">
-                 <tr>
+                <tr>
                     <td id="ki1">-</td>
                     <td id="ki4">-</td>
                     <td id="ki7">-</td>
@@ -106,3 +102,66 @@
         </table>
     </div>
 </div>
+
+@push('styles')
+    <style>
+        .foot-table {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            font-size: 14px;
+        }
+
+        .foot-table thead th {
+            font-weight: 600;
+            color: #64748b;
+            padding: 10px;
+            border: none;
+        }
+
+        .foot-table tbody tr {
+            background: #f8fafc;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .foot-table td {
+            padding: 14px;
+            font-weight: 500;
+            color: #334155;
+            border: none;
+        }
+
+        .foot-table tbody tr td:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .foot-table tbody tr td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .foot-table tbody tr:hover {
+            background: #eef2ff;
+            transition: .2s;
+        }
+    </style>
+
+    <style>
+        .section-title {
+            border-left: 4px solid #4f46e5;
+            padding-left: 12px;
+        }
+
+        .section-title .title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+
+        .section-title .subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            margin: 0;
+        }
+    </style>
+@endpush

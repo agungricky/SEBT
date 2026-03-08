@@ -1,9 +1,10 @@
 <div class="mb-5">
-    <h3 class="text-lg font-semibold text-gray-800 mb-1 text-bold">Normalisasi Data</h3>
-    <p class="text-gray-500 text-sm">Data hasil normalisasi dari data pengujian dengan satuan persentase (%).</p>
-
+    <div class="text-center mt-4">
+        <h3 class="fw-bold mb-1">Nilai Normalisasi</h3>
+        <small class="text-muted">Hasil normalisasi data test</small>
+    </div>
     <div class="table-responsive">
-        <table class="table table-bordered table-hover text-center align-middle w-100 mb-0">
+        <table class="table foot-table table-hover text-center align-middle w-100 mb-0">
             <thead class="table-primary">
                 <tr>
                     <th colspan="2">Anterior <br /> (A)</th>

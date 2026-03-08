@@ -22,7 +22,7 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="">
     <div class="container-scroller">
         <!-- partial:partials/_horizontal-navbar.html -->
         @include('layout.navbar')

@@ -52,8 +52,12 @@
 
             #pieChart path.active {
                 fill: url(#sliceGradientActive);
-                transform: translateY(-10px) scale(1.03);
+                /* transform: translateY(-10px) scale(1.03); */
                 filter: drop-shadow(0 20px 25px rgba(15, 157, 88, 0.35));
+            }
+
+            .card {
+                border-radius: 10px !important;
             }
         </style>
     @endpush
@@ -67,7 +71,10 @@
                     <div class="col-md-4 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title mb-0 pb-0">Pengujian</h4>
+                                <div class="section-title">
+                                    <h3 class="title">Pengujian</h3>
+                                    <p class="subtitle">Chart Pemandu Pengujian.</p>
+                                </div>
                                 <hr width="100%" class="my-3 p-0">
 
                                 <div class="text-center">
@@ -122,35 +129,38 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
 
-                                <h4 class="card-title mb-0">Data</h4>
-                                <hr class="my-3 mb-4">
+                                <div class="section-title mb-2">
+                                    <h3 class="title">Data Pengujian</h3>
+                                    <p class="subtitle">Data pengujian kaki kanan dan kaki kiri.</p>
+                                </div>
+                                <hr width="100%" class="p-0">
 
                                 @include('dashboard.data_pengujian')
-                                @include('dashboard.data_normalisasi')
-                                @include('dashboard.composite_score')
-                                @include('dashboard.grafik')
-
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-            </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:partials/_footer.html -->
-            <footer class="footer">
-                <div class="footer-wrap">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <a
-                                href="https://www.bootstrapdash.com/" target="_blank">bootstrapdash.com
-                            </a>2021</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Only the best <a
-                                href="https://www.bootstrapdash.com/" target="_blank"> Bootstrap dashboard </a>
-                            templates</span>
+                <div class="row d-none" id="hasilPengujian">
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+
+                                <div class="section-title mb-2">
+                                    <h3 class="title">Data Hasil Pengujian</h3>
+                                    <p class="subtitle">Data hasil pengujian kaki kanan dan kaki kiri.</p>
+                                </div>
+                                <hr width="100%" class="p-0">
+
+                                @include('dashboard.data_normalisasi')
+                                @include('dashboard.composite_score')
+                                @include('dashboard.grafik')
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </footer>
+            </div>
+            @include('layout.footer')
         </div>
     </div>
 @endsection

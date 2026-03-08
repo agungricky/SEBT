@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             'umur' => 25,
             'jk' => 'L',
             'institusi' => 'Admin University',
-            'panjang_tungkai' => 0.0,
+            'tungkai_kanan' => 0.0,
+            'tungkai_kiri' => 0.0,
             'keterangan' => null,
             'akun_id' => $akun->id,
         ]);

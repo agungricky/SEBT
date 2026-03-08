@@ -22,7 +22,8 @@ class User extends Authenticatable
         'umur',
         'jk',
         'institusi',
-        'panjang_tungkai',
+        'tungkai_kanan',
+        'tungkai_kiri',
         'keterangan',
     ];
 

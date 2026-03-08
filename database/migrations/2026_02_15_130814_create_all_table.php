@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('umur');
             $table->enum('jk', ['L', 'P']);
             $table->string('institusi')->nullable();
-            $table->decimal('panjang_tungkai', 5, 2);
+            $table->decimal('tungkai_kanan', 5, 2);
+            $table->decimal('tungkai_kiri', 5, 2);
             $table->string('keterangan')->nullable();
             $table->foreignId('akun_id')->nullable()->constrained('akuns')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();

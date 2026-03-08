@@ -1,53 +1,80 @@
-// ======================= Menampilkan nilai Jeda Waktu Pada Form Setting ======================= //
-$('#modalSetting').on('shown.bs.modal', function () {
-    if (window.appConfig && window.appConfig.jeda) {
-        $('#jeda_waktu').val(window.appConfig.jeda);
-    } else if (window.durationMs) {
-        $('#jeda_waktu').val(window.durationMs / 1000);
-    }
-});
-
-// ======================= Setting Jeda Waktu ======================= //
-const jeda = window.appConfig?.jeda ?? 5000;
-window.durationMs = jeda * 1000;
-
-$("#formSetting").submit(function (e) {
-    e.preventDefault();
-
-    $.ajax({
-        url: '/update-setting',
-        type: "POST",
-        data: $(this).serialize(),
-        success: function (response) {
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: response.message,
-                showConfirmButton: false,
-                timer: 1000,
-                timerProgressBar: false,
-            });
-
-            window.appConfig.jeda = parseInt(response.jeda_waktu);
-            window.durationMs = parseInt(response.jeda_waktu) * 1000;
-
-            var modal = bootstrap.Modal.getInstance(
-                document.getElementById('modalSetting')
-            );
-            modal.hide();
-        },
-        error: function (xhr) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Terjadi kesalahan!',
-            });
-            console.log(xhr.responseText);
+$(document).ready(function () {
+    // ======================= Menampilkan nilai Jeda Waktu Pada Form Setting ======================= //
+    $('#modalSetting').on('shown.bs.modal', function () {
+        if (window.appConfig && window.appConfig.jeda) {
+            $('#jeda_waktu').val(window.appConfig.jeda);
+        } else if (window.durationMs) {
+            $('#jeda_waktu').val(window.durationMs / 1000);
         }
     });
+
+    // ======================= Setting Jeda Waktu ======================= //
+    const jeda = window.appConfig?.jeda ?? 5000;
+    window.durationMs = jeda * 1000;
+
+    $("#formSetting").submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '/update-setting',
+            type: "POST",
+            data: $(this).serialize(),
+            success: function (response) {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: false,
+                });
+
+                window.appConfig.jeda = parseInt(response.jeda_waktu);
+                window.durationMs = parseInt(response.jeda_waktu) * 1000;
+
+                var modal = bootstrap.Modal.getInstance(
+                    document.getElementById('modalSetting')
+                );
+                modal.hide();
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Terjadi kesalahan!',
+                });
+                console.log(xhr.responseText);
+            }
+        });
+    });
+    // ======================= Setting Jeda Waktu ======================= //
+
+
+    // ======================= Logic Cek Form Input ======================= //
+    const $btnSubmit = $('#runTest');
+    const requiredFields = ['#nama', '#umur', '#jenis_kelamin', '#institusi',
+        '#tungkai_kanan', '#tungkai_kiri'
+    ];
+
+    function checkForm() {
+        let allFilled = true;
+        requiredFields.forEach(function (selector) {
+            if ($(selector).val().trim() === '') {
+                allFilled = false;
+            }
+        });
+
+        $btnSubmit.prop('disabled', !allFilled);
+    }
+
+    checkForm();
+
+    requiredFields.forEach(function (selector) {
+        $(selector).on('input change', checkForm);
+    });
+    // ======================= Logic Cek Form Input ======================= //
 });
-// ======================= Setting Jeda Waktu ======================= //
 
 // ======================= Inisialisasi Firebase dan Variabel Global ======================= //
 let dataFirebase = {};
@@ -144,30 +171,6 @@ $(document).ready(function () {
         });
         // ======================= Menampilkan Pie Chart ======================= //
 
-        // ======================= Logic Cek Form Input ======================= //
-        const $btnSubmit = $('#runTest');
-        const requiredFields = ['#nama', '#umur', '#jenis_kelamin', '#institusi',
-            '#panjang_tungkai'
-        ];
-
-        function checkForm() {
-            let allFilled = true;
-            requiredFields.forEach(function (selector) {
-                if ($(selector).val().trim() === '') {
-                    allFilled = false;
-                }
-            });
-
-            $btnSubmit.prop('disabled', !allFilled);
-        }
-
-        checkForm();
-
-        requiredFields.forEach(function (selector) {
-            $(selector).on('input change', checkForm);
-        });
-        // ======================= Logic Cek Form Input ======================= //
-
         // ======================= Button Pengujian di Jalankan ======================= //
         $('#runTest').click(function () {
             formData = {
@@ -175,9 +178,15 @@ $(document).ready(function () {
                 umur: $('#umur').val(),
                 jenis_kelamin: $('#jenis_kelamin').val(),
                 institusi: $('#institusi').val(),
-                panjang_tungkai: $('#panjang_tungkai').val(),
+                tungkai_kanan: $('#tungkai_kanan').val(),
+                tungkai_kiri: $('#tungkai_kiri').val(),
                 keterangan: $('#keterangan').val(),
             };
+
+            let posisi = $('#target').offset().top - 200;
+            $('html, body').animate({
+                scrollTop: posisi
+            }, 600);
 
             function kaki() {
                 $('#kakiImg').attr('src', "/assets/images/dashboard/KAKI2.png");
@@ -186,7 +195,8 @@ $(document).ready(function () {
                 $('#umur').prop('disabled', false);
                 $('#jenis_kelamin').prop('disabled', false);
                 $('#institusi').prop('disabled', false);
-                $('#panjang_tungkai').prop('disabled', false);
+                $('#tungkai_kanan').prop('disabled', false);
+                $('#tungkai_kiri').prop('disabled', false);
                 $('#keterangan').prop('disabled', false);
                 $('#runTest').text('Jalankan Pengujian').prop('disabled', false);
                 $('#rkaki').text('-');
@@ -213,7 +223,8 @@ $(document).ready(function () {
                         $('#umur').prop('disabled', true);
                         $('#jenis_kelamin').prop('disabled', true);
                         $('#institusi').prop('disabled', true);
-                        $('#panjang_tungkai').prop('disabled', true);
+                        $('#tungkai_kanan').prop('disabled', true);
+                        $('#tungkai_kiri').prop('disabled', true);
                         $('#keterangan').prop('disabled', true);
                         $('#runTest').text('Proses berlangsung...').prop('disabled', true);
                         $('#rkaki').text('KANAN');
@@ -663,8 +674,15 @@ $(document).ready(function () {
         // }
 
         function normalisasi() {
-            let panjang = parseFloat($('#panjang_tungkai').val());
-            if (!panjang || panjang <= 0) return;
+            $('#hasilPengujian').removeClass('d-none');
+            let posisi = $('#hasilPengujian').offset().top - 0;
+            $('html, body').animate({
+                scrollTop: posisi
+            }, 600);
+            let panjang_kanan = parseFloat($('#tungkai_kanan').val());
+            let panjang_kiri = parseFloat($('#tungkai_kiri').val());
+
+            if (!panjang_kanan || panjang_kanan <= 0 || !panjang_kiri || panjang_kiri <= 0) return;
 
             let kananCol = [1, 3, 5, 7, 9, 11, 13, 15];
             let kiriCol = [2, 4, 6, 8, 10, 12, 14, 16];
@@ -689,8 +707,8 @@ $(document).ready(function () {
                 maxKananGlobal.push(maxKanan);
                 maxKiriGlobal.push(maxKiri);
 
-                let persenKanan = (maxKanan / panjang) * 100;
-                let persenKiri = (maxKiri / panjang) * 100;
+                let persenKanan = (maxKanan / panjang_kanan) * 100;
+                let persenKiri = (maxKiri / panjang_kiri) * 100;
 
                 // simpan hasil ke global array
                 hasilNormalisasi.push({
@@ -718,7 +736,8 @@ $(document).ready(function () {
 
             let formulaKiri, formulaKanan;
             if (maxKananGlobal.length === 8 && maxKiriGlobal.length === 8) {
-                let panjang = parseFloat($('#panjang_tungkai').val()) || 1;
+                let panjang_kanan = parseFloat($('#tungkai_kanan').val()) || 1;
+                let panjang_kiri = parseFloat($('#tungkai_kiri').val()) || 1;
 
                 let sumKanan = maxKananGlobal.join(" + ");
                 let sumKiri = maxKiriGlobal.join(" + ");
@@ -729,12 +748,12 @@ $(document).ready(function () {
                 formulaKiri =
                     `\\( CS_L =
                                 \\frac{(${sumKiri}) \\times 100}
-                                {8 \\times ${panjang}} \\)`;
+                                {8 \\times ${panjang_kiri}} \\)`;
 
                 formulaKanan =
                     `\\( CS_R =
                                 \\frac{(${sumKanan}) \\times 100}
-                                {8 \\times ${panjang}} \\)`;
+                                {8 \\times ${panjang_kanan}} \\)`;
 
                 // ===============================
                 // HITUNG NILAI COMPOSITE SCORE
@@ -742,8 +761,8 @@ $(document).ready(function () {
                 let totalKanan = maxKananGlobal.reduce((a, b) => a + b, 0);
                 let totalKiri = maxKiriGlobal.reduce((a, b) => a + b, 0);
 
-                let csl = (totalKiri / (8 * panjang)) * 100;
-                let csr = (totalKanan / (8 * panjang)) * 100;
+                let csl = (totalKiri / (8 * panjang_kiri)) * 100;
+                let csr = (totalKanan / (8 * panjang_kanan)) * 100;
 
                 // ===============================
                 // FUNGSI KATEGORI
@@ -788,27 +807,24 @@ $(document).ready(function () {
                 // TAMPILKAN HASIL
                 // ===============================
                 if (hasil) {
-                    hasil.innerHTML = `
-                        <div class="row text-center align-items-center mb-3">
-                            <div class="col-12 col-md-6 mb-2 mb-md-0">
-                                <div>
-                                    <span class="text-muted">CSL :</span>
-                                    <strong>${csl.toFixed(2)}%</strong> →
-                                    <span class="text-${kategoriKiri.color} fw-semibold">
-                                        ${kategoriKiri.text}
-                                    </span>
-                                </div>
-                            </div>
+                    $('#hasilCSL').text(csl.toFixed(2) + '%');
+                    $('#kategoriCSL').html(`
+                        <span class="text-${kategoriKiri.color} fw-semibold">
+                            ${kategoriKiri.text}
+                        </span>
+                    `);
 
-                            <div class="col-12 col-md-6">
-                                <div>
-                                    <span class="text-muted">CSR :</span>
-                                    <strong>${csr.toFixed(2)}%</strong> →
-                                    <span class="text-${kategoriKanan.color} fw-semibold">
-                                        ${kategoriKanan.text}
-                                    </span>
-                                </div>
-                            </div>
+                    $('#hasilCSR').text(csr.toFixed(2) + '%');
+                    $('#kategoriCSR').html(`
+                        <span class="text-${kategoriKanan.color} fw-semibold">
+                            ${kategoriKanan.text}
+                        </span>
+                    `);
+
+                    hasil.innerHTML = `
+                        <div class="text-center my-4">
+                            <h3 class="fw-bold mb-1">Keseimbangan Anterior</h3>
+                            <small class="text-muted">Selisih dari Anterior</small>
                         </div>
 
                         <div class="bg-light rounded-3 p-3">
@@ -933,7 +949,8 @@ $(document).ready(function () {
             $('#umur').prop('disabled', false);
             $('#jenis_kelamin').prop('disabled', false);
             $('#institusi').prop('disabled', false);
-            $('#panjang_tungkai').prop('disabled', true);
+            $('#tungkai_kanan').prop('readonly', true);
+            $('#tungkai_kiri').prop('readonly', true);
             $('#keterangan').prop('disabled', false);
             $('#rkaki').text('-');
             $('#formText').text('Tes selesai. Tambahkan keterangan jika perlu, lalu kirim untuk menyimpan hasil.');
@@ -948,12 +965,6 @@ $(document).ready(function () {
                 method: 'POST',
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content'),
-                    // nama: $('#nama').val(),
-                    // umur: $('#umur').val(),
-                    // jenis_kelamin: $('#jenis_kelamin').val(),
-                    // institusi: $('#institusi').val(),
-                    // panjang_tungkai: $('#panjang_tungkai').val(),
-                    // keterangan: $('#keterangan').val(),
                     tanggal: new Date().toISOString(),
                     Data_diri: formData,
 
@@ -975,7 +986,11 @@ $(document).ready(function () {
                     $('#submitData').addClass('d-none');
                     $('#runTest').removeClass('d-none');
                     $('#runTest').text('Jalankan Pengujian').prop('disabled', false);
-                    console.log(response);
+
+                    resetForm();
+                    $('#kakiImg').attr('src', "/assets/images/dashboard/KAKI2.png");
+                    $('#tungkai_kanan').prop('readonly', false);
+                    $('#tungkai_kiri').prop('readonly', false);
                 },
                 error: function (xhr) {
 
