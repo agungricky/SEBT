@@ -21,13 +21,9 @@ return new class extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nama')->unique();
+            $table->string('nama');
             $table->string('umur');
             $table->enum('jk', ['L', 'P']);
-            $table->string('institusi')->nullable();
-            $table->decimal('tungkai_kanan', 5, 2);
-            $table->decimal('tungkai_kiri', 5, 2);
-            $table->string('keterangan')->nullable();
             $table->foreignId('akun_id')->nullable()->constrained('akuns')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
@@ -37,8 +33,11 @@ return new class extends Migration
         Schema::create('tess', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal_tes');
-            $table->decimal('a_ka', 5, 2);
-            $table->decimal('a_ki', 5, 2);
+            $table->string('institusi')->nullable();
+            $table->decimal('tungkai_kanan', 5, 2);
+            $table->decimal('tungkai_kiri', 5, 2);
+            $table->string('keterangan')->nullable();
+            $table->decimal('selisih_anterior', 5, 2);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
@@ -143,6 +142,8 @@ return new class extends Migration
             $table->decimal('l_ki', 5, 2);
             $table->decimal('al_ka', 5, 2);
             $table->decimal('al_ki', 5, 2);
+            $table->string('csl');
+            $table->string('csr');
             $table->foreignId('tes_id')->constrained('tess')->onDelete('cascade');
             $table->timestamps();
         });

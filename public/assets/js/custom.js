@@ -85,6 +85,9 @@ let maxKananGlobal = [];
 let maxKiriGlobal = [];
 let hasilNormalisasi = [];
 let formData = {};
+let selisih = 0;
+let csl = 0;
+let csr = 0;
 
 $(document).ready(function () {
     var firebaseConfig = {
@@ -223,8 +226,8 @@ $(document).ready(function () {
                         $('#umur').prop('disabled', true);
                         $('#jenis_kelamin').prop('disabled', true);
                         $('#institusi').prop('disabled', true);
-                        $('#tungkai_kanan').prop('disabled', true);
-                        $('#tungkai_kiri').prop('disabled', true);
+                        $('#tungkai_kanan').prop('readonly', true);
+                        $('#tungkai_kiri').prop('readonly', true);
                         $('#keterangan').prop('disabled', true);
                         $('#runTest').text('Proses berlangsung...').prop('disabled', true);
                         $('#rkaki').text('KANAN');
@@ -267,7 +270,7 @@ $(document).ready(function () {
 
                         setTimeout(() => {
                             pengujian_kiri(() => {
-                                normalisasi();
+                                normalisasis();
                             });
                         }, 2000);
                     } else {
@@ -641,39 +644,7 @@ $(document).ready(function () {
         // ======================= Fungsi Pengujian ======================= //
 
         // ======================= Fungsi normalisasi ======================= //
-        // function normalisasi() {
-        //     let panjang = parseFloat($('#panjang_tungkai').val());
-        //     if (!panjang || panjang <= 0) return;
-
-        //     // Urutan Kolom pada Tabel Normalisasi (Ka1, Ki1, Ka2, Ki2, ..., Ka8, Ki8)
-        //     let kananCol = [1, 3, 5, 7, 9, 11, 13, 15];
-        //     let kiriCol = [2, 4, 6, 8, 10, 12, 14, 16];
-
-        //     // Mengambil nilai maksimum untuk setiap kelompok (A, AM, M, PM, P, PL, L, AL) pada kaki kanan dan kiri
-        //     for (let i = 0; i < 8; i++) {
-        //         let kr1 = Number(nilai_kanan[i * 3]) || 0;
-        //         let kr2 = Number(nilai_kanan[i * 3 + 1]) || 0;
-        //         let kr3 = Number(nilai_kanan[i * 3 + 2]) || 0;
-        //         let maxKanan = Math.max(kr1, kr2, kr3);
-
-        //         let ki1 = Number(nilai_kiri[i * 3]) || 0;
-        //         let ki2 = Number(nilai_kiri[i * 3 + 1]) || 0;
-        //         let ki3 = Number(nilai_kiri[i * 3 + 2]) || 0;
-        //         let maxKiri = Math.max(ki1, ki2, ki3);
-
-        //         maxKananGlobal[i] = maxKanan;
-        //         maxKiriGlobal[i] = maxKiri;
-
-        //         let persenKanan = (maxKanan / panjang) * 100;
-        //         let persenKiri = (maxKiri / panjang) * 100;
-
-        //         $('#k' + kananCol[i]).html(persenKanan.toFixed(2) + '<br>%');
-        //         $('#k' + kiriCol[i]).html(persenKiri.toFixed(2) + '<br>%');
-        //         renderCompositeFormula();
-        //     }
-        // }
-
-        function normalisasi() {
+        function normalisasis() {
             $('#hasilPengujian').removeClass('d-none');
             let posisi = $('#hasilPengujian').offset().top - 0;
             $('html, body').animate({
@@ -761,8 +732,8 @@ $(document).ready(function () {
                 let totalKanan = maxKananGlobal.reduce((a, b) => a + b, 0);
                 let totalKiri = maxKiriGlobal.reduce((a, b) => a + b, 0);
 
-                let csl = (totalKiri / (8 * panjang_kiri)) * 100;
-                let csr = (totalKanan / (8 * panjang_kanan)) * 100;
+                csl = (totalKiri / (8 * panjang_kiri)) * 100;
+                csr = (totalKanan / (8 * panjang_kanan)) * 100;
 
                 // ===============================
                 // FUNGSI KATEGORI
@@ -792,7 +763,7 @@ $(document).ready(function () {
                 // ===============================
                 // HITUNG PERBANDINGAN (Selisih dari ATERIOR)
                 // ===============================
-                let selisih = Math.abs(maxKiriGlobal[0] - maxKananGlobal[0]);
+                selisih = Math.abs(maxKiriGlobal[0] - maxKananGlobal[0]);
 
                 let sisiDominan = maxKiriGlobal[0] > maxKananGlobal[0] ? "Kiri lebih baik" :
                     maxKananGlobal[0] > maxKiriGlobal[0] ? "Kanan lebih baik" :
@@ -966,13 +937,16 @@ $(document).ready(function () {
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content'),
                     tanggal: new Date().toISOString(),
-                    Data_diri: formData,
+                    Data_form: formData,
 
                     kanan: nilai_kanan,
                     kiri: nilai_kiri,
                     nilai_normalisasi: hasilNormalisasi,
                     max_kanan: maxKananGlobal,
                     max_kiri: maxKiriGlobal,
+                    selisih_anterior: parseFloat(selisih),
+                    csl: parseFloat(csl),
+                    csr: parseFloat(csr)
                 },
                 success: function (response) {
 
@@ -987,10 +961,27 @@ $(document).ready(function () {
                     $('#runTest').removeClass('d-none');
                     $('#runTest').text('Jalankan Pengujian').prop('disabled', false);
 
-                    resetForm();
                     $('#kakiImg').attr('src', "/assets/images/dashboard/KAKI2.png");
-                    $('#tungkai_kanan').prop('readonly', false);
-                    $('#tungkai_kiri').prop('readonly', false);
+                    $('#form')[0].reset();
+                    $('#form').find('input, textarea').val('');
+                    $('#form').find('select').prop('selectedIndex', 0);
+                    $('#tungkai_kanan, #tungkai_kiri').prop('readonly', false).removeAttr('readonly');
+
+                    for (let i = 1; i <= 24; i++) {
+                        $('#ka' + i).text('-');
+                        $('#ki' + i).text('-');
+                    }
+
+                    nilai_kanan = [];
+                    nilai_kiri = [];
+                    normalisasi = [];
+                    maxKananGlobal = [];
+                    maxKiriGlobal = [];
+                    hasilNormalisasi = [];
+                    formData = {};
+
+                    $('#hasilPengujian').addClass('d-none');
+
                 },
                 error: function (xhr) {
 

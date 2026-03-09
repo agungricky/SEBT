@@ -15,8 +15,9 @@ class userController extends Controller
         $search = $request->q;
 
         $users = User::where('nama', 'like', '%' . $search . '%')
+            ->distinct()
             ->limit(10)
-            ->get(['id', 'nama']);
+            ->get(['nama']);
 
         return response()->json($users);
     }

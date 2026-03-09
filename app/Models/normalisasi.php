@@ -25,4 +25,9 @@ class normalisasi extends Model
         'al_ki',
         'tes_id'
     ];
+
+    public function tes()
+    {
+        return $this->belongsTo(tes::class);
+    }
 }

@@ -33,4 +33,9 @@ class data_kanan extends Model
         'al3',
         'tes_id',
     ];
+
+    public function tes()
+    {
+        return $this->belongsTo(tes::class);
+    }
 }

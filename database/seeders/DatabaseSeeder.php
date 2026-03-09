@@ -27,10 +27,6 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Administrator',
             'umur' => 25,
             'jk' => 'L',
-            'institusi' => 'Admin University',
-            'tungkai_kanan' => 0.0,
-            'tungkai_kiri' => 0.0,
-            'keterangan' => null,
             'akun_id' => $akun->id,
         ]);
     }

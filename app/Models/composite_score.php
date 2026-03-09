@@ -23,6 +23,13 @@ class composite_score extends Model
         'l_ki',
         'al_ka',
         'al_ki',
+        'csl',
+        'csr',
         'tes_id'
     ];
+
+    public function tes()
+    {
+        return $this->belongsTo(tes::class);
+    }
 }

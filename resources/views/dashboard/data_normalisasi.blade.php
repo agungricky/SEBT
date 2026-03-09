@@ -4,7 +4,7 @@
         <small class="text-muted">Hasil normalisasi data test</small>
     </div>
     <div class="table-responsive">
-        <table class="table foot-table table-hover text-center align-middle w-100 mb-0">
+        <table class="table foot-table table-hover text-center align-middle w-100 mb-0" id="tabelNormalisasi">
             <thead class="table-primary">
                 <tr>
                     <th colspan="2">Anterior <br /> (A)</th>

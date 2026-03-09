@@ -21,10 +21,7 @@ class User extends Authenticatable
         'nama',
         'umur',
         'jk',
-        'institusi',
-        'tungkai_kanan',
-        'tungkai_kiri',
-        'keterangan',
+        'akun_id',
     ];
 
     /**
@@ -52,6 +49,6 @@ class User extends Authenticatable
 
     public function tes()
     {
-        return $this->hasMany(tes::class);
+        return $this->hasOne(tes::class);
     }
 }

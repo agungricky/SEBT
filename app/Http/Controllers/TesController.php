@@ -40,23 +40,29 @@ class TesController extends Controller
         // VALIDASI
         // =============================
         $request->validate([
-            'Data_diri' => 'required|array',
-            'Data_diri.nama' => 'required|string',
-            'Data_diri.umur' => 'required|numeric',
-            'Data_diri.jenis_kelamin' => 'required|string',
-            'Data_diri.institusi' => 'required|string',
-            'Data_diri.tungkai_kanan' => 'required|numeric',
-            'Data_diri.tungkai_kiri' => 'required|numeric',
-            'Data_diri.keterangan' => 'nullable|string',
-
             'tanggal' => 'required|date',
 
+            'Data_form.nama' => 'required|string|max:255',
+            'Data_form.umur' => 'required|integer|min:1|max:120',
+            'Data_form.jenis_kelamin' => 'required|in:L,P',
+            'Data_form.institusi' => 'required|string|max:255',
+            'Data_form.tungkai_kanan' => 'required|numeric|min:0',
+            'Data_form.tungkai_kiri' => 'required|numeric|min:0',
+            'Data_form.keterangan' => 'nullable|string',
+
             'kanan' => 'required|array|size:24',
+            'kanan.*' => 'required|numeric',
+
             'kiri' => 'required|array|size:24',
+            'kiri.*' => 'required|numeric',
 
             'nilai_normalisasi' => 'required|array|size:8',
+
             'max_kanan' => 'required|array|size:8',
+            'max_kanan.*' => 'required|numeric',
+
             'max_kiri' => 'required|array|size:8',
+            'max_kiri.*' => 'required|numeric',
         ]);
 
         try {
@@ -66,16 +72,12 @@ class TesController extends Controller
             // =============================
             // USER
             // =============================
-            $dataDiri = $request->input('Data_diri');
+            $dataForm = $request->input('Data_form');
 
             $user = User::create([
-                'nama' => $dataDiri['nama'],
-                'umur' => $dataDiri['umur'],
-                'jk' => $dataDiri['jenis_kelamin'],
-                'institusi' => $dataDiri['institusi'],
-                'tungkai_kanan' => $dataDiri['tungkai_kanan'],
-                'tungkai_kiri' => $dataDiri['tungkai_kiri'],
-                'keterangan' => $dataDiri['keterangan'] ?? null,
+                'nama' => $dataForm['nama'],
+                'umur' => $dataForm['umur'],
+                'jk' => $dataForm['jenis_kelamin'],
                 'akun_id' => null,
             ]);
 
@@ -84,8 +86,11 @@ class TesController extends Controller
             // =============================
             $tes = tes::create([
                 'tanggal_tes' => Carbon::parse($request->tanggal)->format('Y-m-d H:i:s'),
-                'a_ka' => $request->kanan[0],
-                'a_ki' => $request->kiri[0],
+                'institusi' => $dataForm['institusi'],
+                'tungkai_kanan' => $dataForm['tungkai_kanan'],
+                'tungkai_kiri' => $dataForm['tungkai_kiri'],
+                'keterangan' => $dataForm['keterangan'] ?? null,
+                'selisih_anterior' => $request->selisih_anterior ?? 0,
                 'user_id' => $user->id,
             ]);
 
@@ -145,6 +150,8 @@ class TesController extends Controller
             }
 
             $compositeInsert['tes_id'] = $tes->id;
+            $compositeInsert['csl'] = $request->csl;
+            $compositeInsert['csr'] = $request->csr;
 
             composite_score::create($compositeInsert);
 
@@ -163,6 +170,10 @@ class TesController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+
+        return response()->json([
+            'data' => $request->all(),
+        ], 200);
     }
 
     /**

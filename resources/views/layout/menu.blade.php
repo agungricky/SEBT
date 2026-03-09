@@ -12,10 +12,9 @@
 
             {{-- RIWAYAT --}}
             <li class="nav-item {{ request()->is('riwayat*') ? 'active' : '' }}">
-                <a href="#" class="nav-link">
+                <a href="{{ route('riwayat.index') }}" class="nav-link">
                     <i class="mdi mdi-history menu-icon"></i>
                     <span class="menu-title">Riwayat</span>
-                    <i class="menu-arrow"></i>
                 </a>
 
                 {{-- <div class="submenu">

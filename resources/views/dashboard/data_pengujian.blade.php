@@ -1,6 +1,6 @@
 <div class="mb-4" id="target">
     <div class="table-responsive" id="data">
-        <table class="table foot-table table-hover text-center align-middle w-100 mb-3">
+        <table class="table foot-table table-hover text-center align-middle w-100 mb-3" id="tabelPengujian1">
             <thead class="table-primary">
                 <tr>
                     <th>Anterior (A)</th>
@@ -50,7 +50,7 @@
             </tbody>
         </table>
 
-        <table class="table foot-table table-hover text-center align-middle w-100">
+        <table class="table foot-table table-hover text-center align-middle w-100" id="tabelPengujian2">
             <thead class="table-primary">
                 <tr>
                     <th>Anterior (A)</th>

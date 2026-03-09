@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class riwayatController extends Controller
@@ -11,7 +12,14 @@ class riwayatController extends Controller
      */
     public function index()
     {
-        //
+        // $dataUser = User::where('akun_id', null)->with('tes')->orderBy('created_at', 'desc')->get();
+        $dataUser = User::where('akun_id', null)
+            ->with(['tes' => function ($q) {
+                $q->orderBy('tanggal_tes', 'desc');
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('Riwayat', compact('dataUser'));
     }
 
     /**
@@ -35,7 +43,8 @@ class riwayatController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = User::with('tes', 'tes.data_kanan', 'tes.data_kiri', 'tes.normalisasi', 'tes.composite_score')->findOrFail($id);
+        return response()->json($data);
     }
 
     /**
@@ -57,8 +66,14 @@ class riwayatController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $data = User::findOrFail($id);
+        $data->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data berhasil dihapus'
+        ]);
     }
 }
