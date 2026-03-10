@@ -1,6 +1,6 @@
-(function($) {
+(function ($) {
   'use strict';
-  $(function() {
+  $(function () {
     var body = $('body');
     var contentWrapper = $('.content-wrapper');
     var scroller = $('.container-scroller');
@@ -36,19 +36,19 @@
     }
 
     var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
-    $('.nav li a', sidebar).each(function() {
+    $('.nav li a', sidebar).each(function () {
       var $this = $(this);
       addActiveClass($this);
     })
 
-    $('.horizontal-menu .nav li a').each(function() {
+    $('.horizontal-menu .nav li a').each(function () {
       var $this = $(this);
       addActiveClass($this);
     })
 
     //Close other submenu in sidebar on opening any
 
-    sidebar.on('show.bs.collapse', '.collapse', function() {
+    sidebar.on('show.bs.collapse', '.collapse', function () {
       sidebar.find('.collapse.show').collapse('hide');
     });
 
@@ -66,14 +66,14 @@
           const chatsScroll = new PerfectScrollbar('.chats');
         }
         if (body.hasClass("sidebar-fixed")) {
-          if($('#sidebar').length) {
+          if ($('#sidebar').length) {
             var fixedSidebarScroll = new PerfectScrollbar('#sidebar .nav');
           }
         }
       }
     }
 
-    $('[data-toggle="minimize"]').on("click", function() {
+    $('[data-toggle="minimize"]').on("click", function () {
       if ((body.hasClass('sidebar-toggle-display')) || (body.hasClass('sidebar-absolute'))) {
         body.toggleClass('sidebar-hidden');
       } else {
@@ -85,22 +85,22 @@
     $(".form-check label,.form-radio label").append('<i class="input-helper"></i>');
 
     //Horizontal menu in mobile
-    $('[data-toggle="horizontal-menu-toggle"]').on("click", function() {
+    $('[data-toggle="horizontal-menu-toggle"]').on("click", function () {
       $(".horizontal-menu .bottom-navbar").toggleClass("header-toggled");
     });
     // Horizontal menu navigation in mobile menu on click
     var navItemClicked = $('.horizontal-menu .page-navigation >.nav-item');
-    navItemClicked.on("click", function(event) {
-      if(window.matchMedia('(max-width: 991px)').matches) {
-        if(!($(this).hasClass('show-submenu'))) {
+    navItemClicked.on("click", function (event) {
+      if (window.matchMedia('(max-width: 991px)').matches) {
+        if (!($(this).hasClass('show-submenu'))) {
           navItemClicked.removeClass('show-submenu');
         }
         $(this).toggleClass('show-submenu');
-      }        
+      }
     })
 
-    $(window).scroll(function() {
-      if(window.matchMedia('(min-width: 992px)').matches) {
+    $(window).scroll(function () {
+      if (window.matchMedia('(min-width: 992px)').matches) {
         var header = $('.horizontal-menu');
         if ($(window).scrollTop() >= 70) {
           $(header).addClass('fixed-on-scroll');
@@ -109,18 +109,21 @@
         }
       }
     });
-    if ($.cookie('kapella-free-banner')!="true") {
-      document.querySelector('#proBanner').classList.add('d-flex');
+    if ($.cookie('kapella-free-banner') != "true") {
+      let banner = document.querySelector('#proBanner');
+      if (banner) {
+        banner.classList.add('d-flex');
+      }
     }
     else {
       document.querySelector('#proBanner').classList.add('d-none');
     }
-    document.querySelector('#bannerClose').addEventListener('click',function() {
-      document.querySelector('#proBanner').classList.add('d-none');
-      document.querySelector('#proBanner').classList.remove('d-flex');
-      var date = new Date();
-      date.setTime(date.getTime() + 24 * 60 * 60 * 1000); 
-      $.cookie('kapella-free-banner', "true", { expires: date });
-    });
+    // document.querySelector('#bannerClose').addEventListener('click', function () {
+    //   document.querySelector('#proBanner').classList.add('d-none');
+    //   document.querySelector('#proBanner').classList.remove('d-flex');
+    //   var date = new Date();
+    //   date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+    //   $.cookie('kapella-free-banner', "true", { expires: date });
+    // });
   });
 })(jQuery);

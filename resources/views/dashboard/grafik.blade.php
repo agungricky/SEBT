@@ -6,6 +6,8 @@
     </div>
 
     <div class="row g-4">
-        <canvas id="barChart"></canvas>
+        <div class="col-12">
+            <canvas id="barChart"></canvas>
+        </div>
     </div>
 </div>

@@ -106,6 +106,7 @@
 
         <script>
             $(document).ready(function() {
+                let barChartInstance = null;
                 $.fn.DataTable.ext.pager.numbers_length = 5;
                 $('#table-atlet').DataTable({
                     pageLength: 13,
@@ -185,7 +186,6 @@
                             // ========================== COMPOSITE SCORE ==========================
                             let comp = response.tes.composite_score || {};
 
-                            // hitung sum kiri/kanan
                             let sumKiri = [
                                 comp.a_ki, comp.am_ki, comp.m_ki, comp.pm_ki,
                                 comp.p_ki, comp.pl_ki, comp.l_ki, comp.al_ki
@@ -196,30 +196,24 @@
                                 comp.p_ka, comp.pl_ka, comp.l_ka, comp.al_ka
                             ].join(' + ');
 
-                            // panjang kaki
                             let panjang_kiri = parseFloat(response.tes.tungkai_kiri || 1);
                             let panjang_kanan = parseFloat(response.tes.tungkai_kanan || 1);
 
-                            // formula LaTeX
                             let formulaKiri =
                                 `\\( CS_L = \\frac{(${sumKiri}) \\times 100}{8 \\times ${panjang_kiri}} \\)`;
                             let formulaKanan =
                                 `\\( CS_R = \\frac{(${sumKanan}) \\times 100}{8 \\times ${panjang_kanan}} \\)`;
 
-                            // tampilkan formula + perbesar font
                             $('#formulaKiri').text(formulaKiri).css('font-size', '20px');
                             $('#formulaKanan').text(formulaKanan).css('font-size', '20px');
 
-                            // render MathJax jika pakai LaTeX
                             if (window.MathJax) {
                                 MathJax.typesetPromise();
                             }
 
-                            // hasil CSL / CSR
                             $('#hasilCSL').text(parseFloat(comp.csl || 0).toFixed(2));
                             $('#hasilCSR').text(parseFloat(comp.csr || 0).toFixed(2));
 
-                            // fungsi kategori
                             function kategori(val) {
                                 if (val > 95) return {
                                     text: "Sangat Baik",
@@ -239,29 +233,33 @@
                                 };
                             }
 
-                            // tampilkan kategori
-                            $('#kategoriCSL').text(kategori(parseFloat(comp.csl || 0)).text);
-                            $('#kategoriCSR').text(kategori(parseFloat(comp.csr || 0)).text);
+                            let ksl = kategori(parseFloat(comp.csl || 0));
+                            let ksr = kategori(parseFloat(comp.csr || 0));
 
-                            // ambil data kanan & kiri
-                            let d_kanan = response.data_kanan || {};
-                            let d_kiri = response.data_kiri || {};
+                            $('#kategoriCSL')
+                                .text(ksl.text)
+                                .removeClass('text-success text-primary text-warning text-danger')
+                                .addClass('text-' + ksl.color + ' fs-4');
 
-                            // ambil nilai pertama dari masing-masing (a1)
+                            $('#kategoriCSR')
+                                .text(ksr.text)
+                                .removeClass('text-success text-primary text-warning text-danger')
+                                .addClass('text-' + ksr.color + ' fs-4');
+
+                            let d_kanan = response.tes.data_kanan || {};
+                            let d_kiri = response.tes.data_kiri || {};
+
                             let nilaiPertamaKanan = parseFloat(d_kanan.a1 || 0);
                             let nilaiPertamaKiri = parseFloat(d_kiri.a1 || 0);
 
-                            // selisih dan sisi dominan
                             let selisih = Math.abs(nilaiPertamaKiri - nilaiPertamaKanan);
                             let sisiDominan = nilaiPertamaKiri > nilaiPertamaKanan ?
                                 "Kiri lebih baik" :
                                 nilaiPertamaKanan > nilaiPertamaKiri ? "Kanan lebih baik" :
                                 "Seimbang";
 
-                            // cek cidera
                             let statusCidera = selisih > 4 ? "Cidera" : "Tidak Cidera";
 
-                            // tampilkan hasil di #hasilComposite
                             let hasil = document.getElementById('hasilComposite');
                             if (hasil) {
                                 hasil.innerHTML = `
@@ -310,73 +308,73 @@
 
 
                             // ========================== GRAFIK ========================== //
-                            let ctx = document.getElementById('barChart').getContext('2d');
-                            // let comp = response.tes.composite_score || {};
-                            // console.log("Composite Score:", comp);
+                            function renderBarChart(comp) {
 
-                            // labels kategori
-                            let labels = ['A', 'AM', 'M', 'PM', 'P', 'PL', 'L', 'AL'];
+                                const canvas = document.getElementById('barChart');
 
-                            // data kanan dan kiri
-                            let dataKanan = [
-                                parseFloat(comp.a_ka || 0),
-                                parseFloat(comp.am_ka || 0),
-                                parseFloat(comp.m_ka || 0),
-                                parseFloat(comp.pm_ka || 0),
-                                parseFloat(comp.p_ka || 0),
-                                parseFloat(comp.pl_ka || 0),
-                                parseFloat(comp.l_ka || 0),
-                                parseFloat(comp.al_ka || 0)
-                            ];
+                                // ambil chart yang sudah ada di canvas
+                                let existingChart = Chart.getChart(canvas);
 
-                            let dataKiri = [
-                                parseFloat(comp.a_ki || 0),
-                                parseFloat(comp.am_ki || 0),
-                                parseFloat(comp.m_ki || 0),
-                                parseFloat(comp.pm_ki || 0),
-                                parseFloat(comp.p_ki || 0),
-                                parseFloat(comp.pl_ki || 0),
-                                parseFloat(comp.l_ki || 0),
-                                parseFloat(comp.al_ki || 0)
-                            ];
+                                if (existingChart) {
+                                    existingChart.destroy();
+                                }
 
-                            // buat chart
-                            let barChartInstance = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                            label: 'Kanan',
-                                            data: dataKanan,
-                                            backgroundColor: 'rgba(54, 162, 235, 0.7)'
-                                        },
-                                        {
-                                            label: 'Kiri',
-                                            data: dataKiri,
-                                            backgroundColor: 'rgba(255, 99, 132, 0.7)'
-                                        }
-                                    ]
-                                },
-                                options: {
-                                    responsive: true,
-                                    plugins: {
-                                        legend: {
-                                            position: 'top'
-                                        },
-                                        tooltip: {
-                                            enabled: true
-                                        }
+                                const ctx = canvas.getContext('2d');
+
+                                let labels = ['A', 'AM', 'M', 'PM', 'P', 'PL', 'L', 'AL'];
+
+                                let dataKanan = [
+                                    parseFloat(comp.a_ka || 0),
+                                    parseFloat(comp.am_ka || 0),
+                                    parseFloat(comp.m_ka || 0),
+                                    parseFloat(comp.pm_ka || 0),
+                                    parseFloat(comp.p_ka || 0),
+                                    parseFloat(comp.pl_ka || 0),
+                                    parseFloat(comp.l_ka || 0),
+                                    parseFloat(comp.al_ka || 0)
+                                ];
+
+                                let dataKiri = [
+                                    parseFloat(comp.a_ki || 0),
+                                    parseFloat(comp.am_ki || 0),
+                                    parseFloat(comp.m_ki || 0),
+                                    parseFloat(comp.pm_ki || 0),
+                                    parseFloat(comp.p_ki || 0),
+                                    parseFloat(comp.pl_ki || 0),
+                                    parseFloat(comp.l_ki || 0),
+                                    parseFloat(comp.al_ki || 0)
+                                ];
+
+                                barChartInstance = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                                label: 'Kanan',
+                                                data: dataKanan,
+                                                backgroundColor: 'rgba(54,162,235,0.7)'
+                                            },
+                                            {
+                                                label: 'Kiri',
+                                                data: dataKiri,
+                                                backgroundColor: 'rgba(255,99,132,0.7)'
+                                            }
+                                        ]
                                     },
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true,
-                                            max: 160
+                                    options: {
+                                        responsive: true,
+                                        animation: false,
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                max: 160
+                                            }
                                         }
                                     }
-                                }
-                            });
+                                });
+                            }
 
-
+                            renderBarChart(comp);
                         }
 
                     });

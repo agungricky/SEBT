@@ -23,15 +23,15 @@
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->tes->tanggal_tes)->format('d-m-Y') }}</td>
                                 <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <button class="btn btn-sm btn-info btn-view" data-id="{{ $item->id }}">
+                                            <i class="mdi mdi-eye"></i>
+                                        </button>
 
-                                    <button class="btn btn-sm btn-info btn-view" data-id="{{ $item->id }}">
-                                        <i class="mdi mdi-eye"></i>
-                                    </button>
-
-                                    <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $item->id }}">
-                                        <i class="mdi mdi-delete"></i>
-                                    </button>
-
+                                        <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $item->id }}">
+                                            <i class="mdi mdi-delete"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -42,4 +42,3 @@
         </div>
     </div>
 </div>
-

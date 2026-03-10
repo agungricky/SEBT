@@ -32,8 +32,8 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="jenis_kelamin">Jenis Kelamin</label>
-                                <select name="jenis_kelamin" id="jenis_kelamin"
-                                    class="form-select form-control form-control-sm" required>
+                                <select name="jenis_kelamin" id="jenis_kelamin" class="form-select form-select-sm"
+                                    required>
                                     <option value="">-</option>
                                     <option value="L">Laki-laki</option>
                                     <option value="P">Perempuan</option>
@@ -108,55 +108,28 @@
     </div>
 </div>
 
+@push('styles')
+    <style>
+        .form-control,
+        .form-select,
+        textarea {
+            border: 1.5px solid #c3c9cc;
+        }
+
+        .form-control:focus,
+        .form-select:focus,
+        textarea:focus {
+            border-color: #0d6efd;
+            box-shadow: none;
+        }
+    </style>
+@endpush
 
 @push('scripts')
     <script>
         window.appConfig = {
             jeda: {{ Cache::get('jeda_waktu', 5) }}
         };
-
-        $('#nama').on('keyup', function() {
-
-            let keyword = $(this).val();
-
-            if (keyword.length < 2) {
-                $('#suggestion-box').empty();
-                return;
-            }
-
-            $.ajax({
-                url: '/user',
-                type: 'GET',
-                data: {
-                    q: keyword
-                },
-                success: function(data) {
-
-                    let box = $('#suggestion-box');
-                    box.empty();
-
-                    data.forEach(function(user) {
-                        box.append(`
-                    <a href="#" class="list-group-item list-group-item-action pilih-user"
-                        data-id="${user.id}"
-                        data-nama="${user.nama}">
-                        ${user.nama}
-                    </a>
-                `);
-                    });
-
-                }
-            });
-
-        });
-
-        $(document).on('click', '.pilih-user', function(e) {
-            e.preventDefault();
-
-            let nama = $(this).data('nama');
-            $('#nama').val(nama);
-            $('#suggestion-box').empty();
-        });
 
         $('.only-number').on('input', function() {
             let value = $(this).val();

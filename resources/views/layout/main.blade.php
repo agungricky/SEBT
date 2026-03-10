@@ -46,7 +46,7 @@
     <script src="{{ asset('assets/vendors/progressbar.js/progressbar.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/chartjs-plugin-datalabels/chartjs-plugin-datalabels.js') }}"></script>
     <script src="{{ asset('assets/vendors/justgage/raphael-2.1.4.min.js') }}"></script>
-    <script src="{{ asset('assets/vendors/justgage/justgage.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendors/justgage/justgage.js') }}"></script> --}}
     <script src="{{ asset('assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
     <!-- Custom js for this page-->
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>

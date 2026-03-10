@@ -89,7 +89,7 @@ class TesController extends Controller
                 'institusi' => $dataForm['institusi'],
                 'tungkai_kanan' => $dataForm['tungkai_kanan'],
                 'tungkai_kiri' => $dataForm['tungkai_kiri'],
-                'keterangan' => $dataForm['keterangan'] ?? null,
+                'keterangan' => $dataForm['keterangan'] ?? '',
                 'selisih_anterior' => $request->selisih_anterior ?? 0,
                 'user_id' => $user->id,
             ]);

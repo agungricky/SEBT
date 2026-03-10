@@ -89,6 +89,8 @@ let selisih = 0;
 let csl = 0;
 let csr = 0;
 
+let barChartInstance = null;
+
 $(document).ready(function () {
     var firebaseConfig = {
         apiKey: "AIzaSyAwhN0Yx8LDPCsELAiyN2HJT1grBina2Os",
@@ -874,63 +876,16 @@ $(document).ready(function () {
 
         renderCompositeFormula();
 
-        let barChartInstance = null;
-        function initGrafik() {
-            const ctx = $('#barChart');
-
-            barChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['A', 'AM', 'M', 'PM', 'P', 'PL', 'L', 'AL'],
-                    datasets: [
-                        { label: 'Kanan', data: Array(8).fill(0), backgroundColor: '#36A2EB' },
-                        { label: 'Kiri', data: Array(8).fill(0), backgroundColor: '#FF6384' }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true, max: 160 }
-                    }
-                }
-            });
-        }
-
-        function updateGrafik() {
-            if (!barChartInstance) return;
-
-            let kanan = Array.isArray(maxKananGlobal)
-                ? maxKananGlobal.map(v => parseFloat(v) || 0)
-                : Array(8).fill(0);
-
-            let kiri = Array.isArray(maxKiriGlobal)
-                ? maxKiriGlobal.map(v => parseFloat(v) || 0)
-                : Array(8).fill(0);
-
-            barChartInstance.data.datasets[0].data = kanan;
-            barChartInstance.data.datasets[1].data = kiri;
-            barChartInstance.update();
-
-            $('#runTest').addClass('d-none');
-            $('#submitData').removeClass('d-none');
-
-            $('#kakiImg').attr('src', "/assets/images/dashboard/KAKI2.png");
-            $('#text-kaki').text('Tes Selesai');
-            $('#nama').prop('disabled', false);
-            $('#umur').prop('disabled', false);
-            $('#jenis_kelamin').prop('disabled', false);
-            $('#institusi').prop('disabled', false);
-            $('#tungkai_kanan').prop('readonly', true);
-            $('#tungkai_kiri').prop('readonly', true);
-            $('#keterangan').prop('disabled', false);
-            $('#rkaki').text('-');
-            $('#formText').text('Tes selesai. Tambahkan keterangan jika perlu, lalu kirim untuk menyimpan hasil.');
-        }
-
         $('#submitData').on('click', function () {
             let btn = $(this);
             btn.prop('disabled', true).text('Mengirim...');
 
+            formData = {};
+
+            $('#form').serializeArray().forEach(function (item) {
+                formData[item.name] = item.value;
+            });
+            
             $.ajax({
                 url: '/tes',
                 method: 'POST',
@@ -1006,7 +961,59 @@ $(document).ready(function () {
             });
 
         });
-
-        initGrafik();
     });
+
+    function initGrafik() {
+        const ctx = document.getElementById('barChart').getContext('2d');
+        barChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['A', 'AM', 'M', 'PM', 'P', 'PL', 'L', 'AL'],
+                datasets: [
+                    {
+                        label: 'Kanan',
+                        data: maxKananGlobal,
+                        backgroundColor: '#36A2EB'
+                    },
+                    {
+                        label: 'Kiri',
+                        data: maxKiriGlobal,
+                        backgroundColor: '#FF6384'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 160
+                    }
+                }
+            }
+        });
+    }
+
+    function updateGrafik() {
+        if (!barChartInstance) return;
+        barChartInstance.data.datasets[0].data = maxKananGlobal;
+        barChartInstance.data.datasets[1].data = maxKiriGlobal;
+        barChartInstance.update();
+
+        $('#runTest').addClass('d-none');
+        $('#submitData').removeClass('d-none');
+        $('#kakiImg').attr('src', "/assets/images/dashboard/KAKI2.png");
+        $('#text-kaki').text('Tes Selesai');
+        $('#nama').prop('disabled', false);
+        $('#umur').prop('disabled', false);
+        $('#jenis_kelamin').prop('disabled', false);
+        $('#institusi').prop('disabled', false);
+        $('#tungkai_kanan').prop('readonly', true);
+        $('#tungkai_kiri').prop('readonly', true);
+        $('#keterangan').prop('disabled', false);
+        $('#rkaki').text('-');
+        $('#formText').text('Tes selesai. Tambahkan keterangan jika perlu, lalu kirim untuk menyimpan hasil.');
+    }
+
+    initGrafik();
 });
