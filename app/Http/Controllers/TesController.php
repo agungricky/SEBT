@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TesExport;
 use App\Models\composite_score;
 use App\Models\data_kanan;
 use App\Models\data_kiri;
@@ -12,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TesController extends Controller
 {
@@ -206,5 +208,10 @@ class TesController extends Controller
     public function destroy(tes $tes)
     {
         //
+    }
+
+    public function Excel()
+    {
+        return Excel::download(new TesExport, 'data-Tes.xlsx');
     }
 }

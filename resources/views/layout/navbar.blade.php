@@ -9,11 +9,10 @@
                              src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" /></a>
                  </div>
                  <ul class="navbar-nav navbar-nav-right">
-                     <li class="nav-item d-lg-flex d-none">
-                         <button type="button" class="btn btn-inverse-success btn-sm d-flex align-items-center"
-                             onclick="exportToExcel()">
+                     <li class="nav-item d-lg-flex">
+                         <a href="{{ route('export.excel') }}" type="button" class="btn btn-inverse-success btn-sm d-flex align-items-center">
                              <i class="mdi mdi-file-excel me-1"></i> Export Excel
-                         </button>
+                         </a>
                      </li>
                      <li class="nav-item d-lg-flex d-none me-2">
                          <button type="button" class="btn btn-inverse-primary btn-sm d-flex align-items-center"

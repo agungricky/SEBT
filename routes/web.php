@@ -19,3 +19,4 @@ Route::resource('/dashboard', dashboardController::class);
 Route::resource('/tes', TesController::class);
 Route::resource('/user', userController::class);
 Route::resource('/riwayat', riwayatController::class);
+Route::get('/export-excel', [TesController::class, 'Excel'])->name('export.excel');
