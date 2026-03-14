@@ -44,6 +44,7 @@ class ListSheetExport implements FromArray, WithTitle, WithEvents
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
+                $lastRow = $sheet->getHighestRow();
 
                 // Header A1 - D1
                 $sheet->mergeCells('A1:D1');
@@ -82,7 +83,6 @@ class ListSheetExport implements FromArray, WithTitle, WithEvents
                     'alignment' => ['horizontal' => 'center', 'vertical' => 'center'],
                 ]);
 
-                $lastRow = $sheet->getHighestRow();
                 $style = [
                     'alignment' => [
                         'horizontal' => 'center',
@@ -94,8 +94,19 @@ class ListSheetExport implements FromArray, WithTitle, WithEvents
                         ],
                     ],
                 ];
-                $sheet->getStyle("A1:D1")->applyFromArray($style);
-                $sheet->getStyle("A3:D{$lastRow}")->applyFromArray($style);
+                $sheet->getStyle("A1:D2")->applyFromArray($style);
+                $sheet->getStyle("A1:D{$lastRow}")->applyFromArray($style);
+
+
+                // Style Nama left
+                $sheet->getStyle('B3:B' . $lastRow)->applyFromArray([
+                    'font' => ['bold' => false, 'size' => 12],
+                    'alignment' => [
+                        'horizontal' => 'left',
+                        'vertical' => 'center',
+                        'wrapText' => true
+                    ],
+                ]);
 
                 // Kolom A - D Lebarnya menyesuaikan konten
                 $sheet->getColumnDimension('A')->setAutoSize(true);

@@ -69,7 +69,6 @@ $(document).ready(function () {
     }
 
     checkForm();
-
     requiredFields.forEach(function (selector) {
         $(selector).on('input change', checkForm);
     });
@@ -99,6 +98,8 @@ $(document).ready(function () {
         projectId: "setb-dummy",
     };
 
+    console.log("Firebase loaded:", firebase);
+
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const usDistanceRef = database.ref('usDistanceVal');
@@ -110,6 +111,10 @@ $(document).ready(function () {
             detail: dataFirebase
         });
         document.dispatchEvent(event);
+    });
+
+    document.addEventListener("firebaseDataUpdate", e => {
+        console.log("DATA BARU:", e.detail)
     });
 
     //=================================================== //
@@ -885,7 +890,7 @@ $(document).ready(function () {
             $('#form').serializeArray().forEach(function (item) {
                 formData[item.name] = item.value;
             });
-            
+
             $.ajax({
                 url: '/tes',
                 method: 'POST',

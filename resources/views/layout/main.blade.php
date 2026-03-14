@@ -66,7 +66,6 @@
 
     <!-- End custom js for this page-->
     @stack('scripts')
-
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 
 </body>
