@@ -239,12 +239,12 @@
                             $('#kategoriCSL')
                                 .text(ksl.text)
                                 .removeClass('text-success text-primary text-warning text-danger')
-                                .addClass('text-' + ksl.color + ' fs-4');
+                                .addClass('text-' + ksl.color + ' fs-5');
 
                             $('#kategoriCSR')
                                 .text(ksr.text)
                                 .removeClass('text-success text-primary text-warning text-danger')
-                                .addClass('text-' + ksr.color + ' fs-4');
+                                .addClass('text-' + ksr.color + ' fs-5');
 
                             let d_kanan = response.tes.data_kanan || {};
                             let d_kiri = response.tes.data_kiri || {};
@@ -383,20 +383,45 @@
 
                 $(document).on('click', '.btn-delete', function() {
                     let id = $(this).data('id');
+                    Swal.fire({
+                        title: 'Yakin ingin menghapus?',
+                        text: "Data yang dihapus tidak bisa dikembalikan",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, hapus',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: "/riwayat/" + id,
+                                data: {
+                                    _token: "{{ csrf_token() }}"
+                                },
+                                success: function(response) {
 
-                    $.ajax({
-                        type: "DELETE",
-                        url: "/riwayat/" + id,
-                        data: {
-                            _token: "{{ csrf_token() }}"
-                        },
-                        success: function(response) {
-                            alert("Data berhasil dihapus");
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: 'Data berhasil dihapus'
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+
+                                },
+
+                                error: function(xhr) {
+
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: 'Data gagal dihapus'
+                                    });
+                                }
+                            });
                         }
                     });
-
                 });
-
             });
         </script>
     @endpush

@@ -3,14 +3,17 @@
          <div class="container-fluid">
              <div class="navbar-menu-wrapper d-flex align-items-center justify-content-between">
                  <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                     <a class="navbar-brand brand-logo" href="index.html"><img src="{{ asset('assets/images/logo.svg') }}"
-                             alt="logo" /></a>
+                     <a class="navbar-brand brand-logo ms-3" href="index.html">
+                         <img src="{{ asset('assets/images/dashboard/logo.png') }}" alt="logo"
+                             style="width:180px; height:auto;">
+                     </a>
                      <a class="navbar-brand brand-logo-mini" href="index.html"><img
-                             src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" /></a>
+                             src="{{ asset('assets/images/dashboard/logo.png') }}" alt="logo" /></a>
                  </div>
                  <ul class="navbar-nav navbar-nav-right">
                      <li class="nav-item d-lg-flex">
-                         <a href="{{ route('export.excel') }}" type="button" class="btn btn-inverse-success btn-sm d-flex align-items-center">
+                         <a href="{{ route('export.excel') }}" type="button"
+                             class="btn btn-inverse-success btn-sm d-flex align-items-center">
                              <i class="mdi mdi-file-excel me-1"></i> Export Excel
                          </a>
                      </li>
@@ -21,16 +24,19 @@
                          </button>
                      </li>
                      <li class="nav-item dropdown d-lg-flex d-none">
-                         <button type="button" class="btn btn-inverse-danger btn-sm d-flex align-items-center">
-                             <i class="mdi mdi-logout me-1"></i> Logout
-                         </button>
+                         <form method="POST" action="{{ route('logout') }}">
+                             @csrf
+                             <button type="submit" class="btn btn-inverse-danger btn-sm d-flex align-items-center">
+                                 <i class="mdi mdi-logout me-1"></i> Logout
+                             </button>
+                         </form>
                      </li>
 
-                     <li class="nav-item nav-profile dropdown">
-                         <span class="nav-profile-name">Johnson</span>
+                     {{-- <li class="nav-item nav-profile dropdown">
+                         <span class="nav-profile-name">Administrator</span>
                          <span class="online-status"></span>
                          <img src="{{ asset('assets/images/faces/face28.png') }}" alt="profile" />
-                     </li>
+                     </li> --}}
                  </ul>
                  <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                      data-toggle="horizontal-menu-toggle">
@@ -76,4 +82,10 @@
      </div>
 
      @include('layout.menu')
+
+     <style>
+         .navbar-nav-right {
+             margin-right: 50px;
+         }
+     </style>
  </div>

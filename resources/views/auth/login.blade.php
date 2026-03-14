@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Kapella Bootstrap Admin Dashboard</title>
+    <title>SEBT – Star Excursion Balance Test</title>
 
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/base/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('assets/images/dashboard/univ.ico') }}" />
 
     <style>
         body {
@@ -71,11 +71,26 @@
                     <div class="row w-100 mx-0 justify-content-center">
                         <div class="col-lg-4">
                             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                                <div class="brand-logo text-center">
-                                    <img src="{{ asset('assets/images/logo.svg') }}" alt="logo">
+                                <div
+                                    class="brand-logo text-center d-flex align-items-center justify-content-center m-0 p-0">
+
+                                    <!-- Logo kiri -->
+                                    <img src="{{ asset('assets/images/dashboard/logo.png') }}" alt="logo kiri"
+                                        style="width:160px; height:auto; margin-right:10px;">
+
+                                    <!-- Logo kanan -->
+                                    <img src="{{ asset('assets/images/dashboard/logo2.png') }}" alt="logo kanan"
+                                        style="width:60px; height:auto; margin-left:10px;">
+
                                 </div>
-                                <h4 class="text-center mb-1">Hello! Let's get started</h4>
-                                <h6 class="font-weight-light text-center mb-4">Sign in to continue.</h6>
+                                <div class="text-center mb-4">
+                                    <h3 style="font-weight:700; color:#2C3E50;">
+                                        Sistem Analisis Keseimbangan Atlet
+                                    </h3>
+                                    <h6 style="color:#6c757d;">
+                                        Star Excursion Balance Test (SEBT)
+                                    </h6>
+                                </div>
                                 <form class="pt-3" method="POST" action="{{ route('proses-Login') }}">
                                     @csrf
                                     <div class="form-group">

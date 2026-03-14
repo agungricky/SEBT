@@ -19990,7 +19990,7 @@ code {
 .footer {
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 0px;
   transition: all 0.25s ease;
   -moz-transition: all 0.25s ease;
   -webkit-transition: all 0.25s ease;
@@ -20003,7 +20003,7 @@ code {
 .footer .footer-wrap {
   background: #fff;
   color: color(dark);
-  padding: 30px 1rem;
+  padding: 25px 1rem;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -23296,7 +23296,7 @@ dl li {
 }
 
 .content-wrapper {
-  padding: 1.5rem 0;
+  padding: 1.5rem 0 0 0;
   width: 100%;
   padding-right: var(--bs-gutter-x, 0.75rem);
   padding-left: var(--bs-gutter-x, 0.75rem);

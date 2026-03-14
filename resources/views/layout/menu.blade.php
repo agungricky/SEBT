@@ -2,40 +2,70 @@
     <div class="container">
         <ul class="nav page-navigation justify-content-center">
 
-            {{-- DASHBOARD --}}
-            <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('/dashboard') }}">
-                    <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
-                    <span class="menu-title">Dashboard</span>
+            <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <a href="{{ url('/dashboard') }}">
+                    <i class="mdi mdi-monitor-dashboard menu-icon"></i>
+                    <span>Dashboard</span>
                 </a>
             </li>
 
-            {{-- RIWAYAT --}}
-            <li class="nav-item {{ request()->is('riwayat*') ? 'active' : '' }}">
-                <a href="{{ route('riwayat.index') }}" class="nav-link">
+            <li class="nav-item {{ request()->routeIs('riwayat.*') ? 'active' : '' }}">
+                <a href="{{ route('riwayat.index') }}">
                     <i class="mdi mdi-history menu-icon"></i>
-                    <span class="menu-title">Riwayat</span>
+                    <span>Riwayat</span>
                 </a>
-
-                {{-- <div class="submenu">
-                    <ul>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('riwayat/buttons') ? 'active' : '' }}"
-                                href="{{ url('/riwayat/buttons') }}">
-                                Buttons
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('riwayat/typography') ? 'active' : '' }}"
-                                href="{{ url('/riwayat/typography') }}">
-                                Typography
-                            </a>
-                        </li>
-                    </ul>
-                </div> --}}
             </li>
 
         </ul>
     </div>
 </nav>
+
+<style>
+.page-navigation{
+    display:flex;
+    justify-content:center;
+    gap:0px;
+}
+
+/* ukuran menu */
+.page-navigation .nav-item{
+    width:150px;
+}
+
+/* link menu */
+.page-navigation .nav-item a{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    height:60px;                /* tinggi menu */
+    border-radius:10px;
+    text-decoration:none;
+    color:#555;
+    font-size:15px;
+    transition:all .2s ease;
+    margin: 10px;
+}
+
+/* icon */
+.page-navigation .menu-icon{
+    font-size:20px;
+}
+
+/* hover */
+.page-navigation .nav-item a:hover{
+    background:#f5f6fa;
+}
+
+/* active */
+.page-navigation .nav-item.active a{
+    background:#464dee;
+    color:white;
+    font-weight:500;
+}
+
+/* garis bawah active */
+.page-navigation .nav-item.active{
+    position:relative;
+}
+</style>
