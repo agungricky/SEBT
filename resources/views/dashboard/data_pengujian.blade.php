@@ -3,7 +3,7 @@
         <table class="table foot-table table-hover text-center align-middle w-100 mb-3" id="tabelPengujian1">
             <thead class="table-primary">
                 <tr>
-                    <th>Anterior (A)</th>
+                    <th class="fw">Anterior (A)</th>
                     <th>Anteromedial (AM)</th>
                     <th>Medial (M)</th>
                     <th>Posteromedial (PM)</th>

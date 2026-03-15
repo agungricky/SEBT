@@ -15,11 +15,11 @@
                 </div>
                 <div id="formulaKiri" class="small mb-3"></div>
 
-                <div class="mb-1">
+                <div class="mb-1 score-text">
                     <span class="text-muted">CSL :</span>
-                    <span id="hasilCSL" class="fw-semibold"></span>
+                    <span id="hasilCSL" class="fw-semibold score-value"></span>
                 </div>
-                <div id="kategoriCSL" class="fs-6 fw-semibold"></div>
+                <div id="kategoriCSL" class="fw-semibold score-text"></div>
             </div>
         </div>
 
@@ -31,11 +31,11 @@
                 </div>
                 <div id="formulaKanan" class="small mb-3"></div>
 
-                <div class="mb-1">
+                <div class="mb-1 score-text">
                     <span class="text-muted">CSR :</span>
-                    <span id="hasilCSR" class="fw-semibold"></span>
+                    <span id="hasilCSR" class="fw-semibold score-value"></span>
                 </div>
-                <div id="kategoriCSR" class="fs-6 fw-semibold"></div>
+                <div id="kategoriCSR" class="fw-semibold score-text"></div>
             </div>
         </div>
     </div>

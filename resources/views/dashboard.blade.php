@@ -4,7 +4,7 @@
         <style>
             #pieChart {
                 margin-top: 20px;
-                filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.08));
+                /* filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.08)); */
             }
 
             #pieChart text {
@@ -53,11 +53,30 @@
             #pieChart path.active {
                 fill: url(#sliceGradientActive);
                 /* transform: translateY(-10px) scale(1.03); */
-                filter: drop-shadow(0 20px 25px rgba(15, 157, 88, 0.35));
+                /* filter: drop-shadow(0 20px 25px rgba(15, 157, 88, 0.35)); */
             }
 
             .card {
                 border-radius: 10px !important;
+            }
+
+            .formula {
+                display: block;
+                max-width: 100%;
+                font-size: clamp(11px, 1.4vw, 18px);
+                line-height: 1.3;
+            }
+
+            .formula mjx-container {
+                max-width: 100% !important;
+            }
+
+            .score-text {
+                font-size: clamp(12px, 1.6vw, 16px);
+            }
+
+            .score-value {
+                font-size: clamp(14px, 2vw, 18px);
             }
         </style>
     @endpush

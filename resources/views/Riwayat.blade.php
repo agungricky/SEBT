@@ -198,14 +198,23 @@
 
                             let panjang_kiri = parseFloat(response.tes.tungkai_kiri || 1);
                             let panjang_kanan = parseFloat(response.tes.tungkai_kanan || 1);
+                            let formulaKiriEl = document.getElementById("formulaKiri");
+                            let formulaKananEl = document.getElementById("formulaKanan");
 
-                            let formulaKiri =
-                                `\\( CS_L = \\frac{(${sumKiri}) \\times 100}{8 \\times ${panjang_kiri}} \\)`;
-                            let formulaKanan =
-                                `\\( CS_R = \\frac{(${sumKanan}) \\times 100}{8 \\times ${panjang_kanan}} \\)`;
+                            formulaKiriEl.innerHTML = `
+                                <span class="formula">
+                                \\( CS_L = \\frac{(${sumKiri}) \\times 100}{8 \\times ${panjang_kiri}} \\)
+                                </span>
+                            `;
 
-                            $('#formulaKiri').text(formulaKiri).css('font-size', '20px');
-                            $('#formulaKanan').text(formulaKanan).css('font-size', '20px');
+                            formulaKananEl.innerHTML = `
+                                <span class="formula">
+                                \\( CS_R = \\frac{(${sumKanan}) \\times 100}{8 \\times ${panjang_kanan}} \\)
+                                </span>
+                            `;
+
+                            // $('#formulaKiri').text(formulaKiri).css('font-size', '20px');
+                            // $('#formulaKanan').text(formulaKanan).css('font-size', '20px');
 
                             if (window.MathJax) {
                                 MathJax.typesetPromise();
@@ -235,6 +244,8 @@
 
                             let ksl = kategori(parseFloat(comp.csl || 0));
                             let ksr = kategori(parseFloat(comp.csr || 0));
+                            console.log(ksl);
+                            
 
                             $('#kategoriCSL')
                                 .text(ksl.text)

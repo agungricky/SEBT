@@ -173,9 +173,9 @@ class TesController extends Controller
             ], 500);
         }
 
-        return response()->json([
-            'data' => $request->all(),
-        ], 200);
+        // return response()->json([
+        //     'data' => $request->all(),
+        // ], 200);
     }
 
     /**

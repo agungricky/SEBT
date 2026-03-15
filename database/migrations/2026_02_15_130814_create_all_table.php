@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('username');
             $table->string('password');
             $table->enum('role', ['admin'])->default('admin');
+            $table->rememberToken();
             $table->timestamps();
         });
 
@@ -26,7 +27,6 @@ return new class extends Migration
             $table->enum('jk', ['L', 'P']);
             $table->foreignId('akun_id')->nullable()->constrained('akuns')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
 

@@ -11,7 +11,7 @@
                              src="{{ asset('assets/images/dashboard/logo.png') }}" alt="logo" /></a>
                  </div>
                  <ul class="navbar-nav navbar-nav-right">
-                     <li class="nav-item d-lg-flex">
+                     <li class="nav-item d-lg-flex d-none me-2">
                          <a href="{{ route('export.excel') }}" type="button"
                              class="btn btn-inverse-success btn-sm d-flex align-items-center">
                              <i class="mdi mdi-file-excel me-1"></i> Export Excel
