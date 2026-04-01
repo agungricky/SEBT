@@ -20,15 +20,18 @@ class settingController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'jeda_waktu' => 'required|numeric|min:1'
+            'jeda_waktu' => 'required|integer|min:1',
+            'waktu_tes' => 'required|integer|min:1'
         ]);
 
         Cache::forever('jeda_waktu', $request->jeda_waktu);
+        Cache::forever('waktu_tes', $request->waktu_tes);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Jeda waktu berhasil diperbarui',
-            'jeda_waktu' => $request->jeda_waktu
+            'message' => 'Setting berhasil diperbarui',
+            'jeda_waktu' => $request->jeda_waktu,
+            'waktu_tes' => $request->waktu_tes
         ]);
     }
 }

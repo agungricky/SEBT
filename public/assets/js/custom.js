@@ -15,16 +15,22 @@ let barChartInstance = null;
 
 $(document).ready(function () {
     // ======================= Menampilkan nilai Jeda Waktu Pada Form Setting ======================= //
+    window.appConfig = window.appConfig || {};
+
     $('#modalSetting').on('shown.bs.modal', function () {
-        if (window.appConfig && window.appConfig.jeda) {
+        if (window.appConfig?.jeda != null) {
             $('#jeda_waktu').val(window.appConfig.jeda);
-        } else if (window.durationMs) {
+            $('#waktu_tes').val(window.appConfig.tes);
+        } else if (window.durationMs != null) {
             $('#jeda_waktu').val(window.durationMs / 1000);
+            $('#waktu_tes').val(window.tesDurationMs / 1000);
         }
     });
 
     let jeda = window.appConfig?.jeda ?? 2;
+    let tes = window.appConfig?.tes ?? 2;
     window.durationMs = jeda * 1000;
+    window.tesDurationMs = tes * 1000;
 
     $("#formSetting").submit(function (e) {
         e.preventDefault();
@@ -46,6 +52,9 @@ $(document).ready(function () {
 
                 window.appConfig.jeda = parseInt(response.jeda_waktu);
                 window.durationMs = parseInt(response.jeda_waktu) * 1000;
+
+                window.appConfig.tes = parseInt(response.waktu_tes);
+                window.tesDurationMs = parseInt(response.waktu_tes) * 1000;
 
                 var modal = bootstrap.Modal.getInstance(
                     document.getElementById('modalSetting')
@@ -180,7 +189,6 @@ $(document).ready(function () {
     function pengujian_kanan(onComplete) {
         nilai_kanan = new Array(24).fill(0);
 
-        // Mengatur urutan label dan langkah yang ditampilkan pada pie chart
         const labels = [
             'A', 'A', 'A', 'AM', 'AM', 'AM', 'M', 'M', 'M',
             'PM', 'PM', 'PM', 'P', 'P', 'P',
@@ -188,7 +196,6 @@ $(document).ready(function () {
             'AL', 'AL', 'AL'
         ];
 
-        // Langkah-langkah yang akan ditampilkan pada kolom "Steps" selama proses pengujian
         const steps = [
             '1', '2', '3', '1', '2', '3', '1', '2', '3',
             '1', '2', '3', '1', '2', '3',
@@ -196,7 +203,6 @@ $(document).ready(function () {
             '1', '2', '3'
         ];
 
-        // Mengatur urutan cellIds sesuai dengan data yang akan ditampilkan pada tabel
         const cellIds = [
             'ka1', 'ka2', 'ka3', 'ka4', 'ka5', 'ka6', 'ka7', 'ka8',
             'ka9', 'ka10', 'ka11', 'ka12', 'ka13', 'ka14', 'ka15', 'ka16',
@@ -204,152 +210,128 @@ $(document).ready(function () {
         ];
 
         const durationMs = window.durationMs;
+        const delayMs = window.tesDurationMs ?? 2000;
 
         let currentIndex = 0;
         let endTime = Date.now() + durationMs;
 
-        // Reset semua sel
+        let isDelay = false;
+        let delayEnd = 0;
+
         cellIds.forEach(id => $('#' + id).text('-'));
         $("#pieChart path").removeClass("active");
         $("#steps").text("-");
 
-        // Aktifkan pertama
         setActive(labels[currentIndex]);
         $("#steps").text(steps[currentIndex]);
 
-        const autoInterval = setInterval(() => {
-            let remaining = endTime - Date.now();
+        // const mapping = {
+        //     ka1: { firebaseKey: 'a1', index: 0 }, 
+        //     ka2: { firebaseKey: 'a1', index: 1 }, 
+        //     ka3: { firebaseKey: 'a1', index: 2 },
 
+        //     ka4: { firebaseKey: 'b2', index: 3 }, 
+        //     ka5: { firebaseKey: 'a2', index: 4 }, 
+        //     ka6: { firebaseKey: 'a2', index: 5 },
+        //     ka7: { firebaseKey: 'a3', index: 6 }, 
+        //     ka8: { firebaseKey: 'a3', index: 7 }, 
+        //     ka9: { firebaseKey: 'a3', index: 8 },
+        //     ka10: { firebaseKey: 'a4', index: 9 }, 
+        //     ka11: { firebaseKey: 'a4', index: 10 }, 
+        //     ka12: { firebaseKey: 'a4', index: 11 },
+        //     ka13: { firebaseKey: 'b1', index: 12 }, 
+        //     ka14: { firebaseKey: 'b1', index: 13 }, 
+        //     ka15: { firebaseKey: 'b1', index: 14 },
+        //     ka16: { firebaseKey: 'b2', index: 15 }, 
+        //     ka17: { firebaseKey: 'b2', index: 16 }, 
+        //     ka18: { firebaseKey: 'b2', index: 17 },
+        //     ka19: { firebaseKey: 'b3', index: 18 }, 
+        //     ka20: { firebaseKey: 'b3', index: 19 }, 
+        //     ka21: { firebaseKey: 'b3', index: 20 },
+        //     ka22: { firebaseKey: 'b4', index: 21 }, 
+        //     ka23: { firebaseKey: 'b4', index: 22 }, 
+        //     ka24: { firebaseKey: 'b4', index: 23 },
+        // };
+
+        const mapping = {
+            ka1: { firebaseKey: 'a1', index: 0 }, 
+            ka2: { firebaseKey: 'a1', index: 1 }, 
+            ka3: { firebaseKey: 'a1', index: 2 },
+
+            ka4: { firebaseKey: 'b1', index: 3 }, 
+            ka5: { firebaseKey: 'b1', index: 4 }, 
+            ka6: { firebaseKey: 'b1', index: 5 },
+
+            ka7: { firebaseKey: 'b2', index: 6 }, 
+            ka8: { firebaseKey: 'b2', index: 7 }, 
+            ka9: { firebaseKey: 'b2', index: 8 },
+
+            ka10: { firebaseKey: 'b3', index: 9 }, 
+            ka11: { firebaseKey: 'b3', index: 10 }, 
+            ka12: { firebaseKey: 'b3', index: 11 },
+
+            ka13: { firebaseKey: 'b4', index: 12 }, 
+            ka14: { firebaseKey: 'b4', index: 13 }, 
+            ka15: { firebaseKey: 'b4', index: 14 },
+
+            ka16: { firebaseKey: 'a4', index: 15 }, 
+            ka17: { firebaseKey: 'a4', index: 16 }, 
+            ka18: { firebaseKey: 'a4', index: 17 },
+
+            ka19: { firebaseKey: 'a3', index: 18 }, 
+            ka20: { firebaseKey: 'a3', index: 19 }, 
+            ka21: { firebaseKey: 'a3', index: 20 },
+
+            ka22: { firebaseKey: 'a2', index: 21 }, 
+            ka23: { firebaseKey: 'a2', index: 22 }, 
+            ka24: { firebaseKey: 'a2', index: 23 },
+        };
+
+        const autoInterval = setInterval(() => {
+            if (isDelay) {
+                if (Date.now() >= delayEnd) {
+                    isDelay = false;
+
+                    currentIndex++;
+                    if (currentIndex >= labels.length) {
+                        clearInterval(autoInterval);
+                        $("#pieChart path").removeClass("active");
+                        $("#activeLabel").text("-");
+                        $("#steps").text("-");
+
+                        if (typeof onComplete === "function") onComplete();
+                        return;
+                    }
+
+                    setActive(labels[currentIndex]);
+                    $("#steps").text(steps[currentIndex]);
+                    endTime = Date.now() + durationMs;
+                }
+                return;
+            }
+
+            let remaining = endTime - Date.now();
             if (remaining <= 0) {
                 $('#' + cellIds[currentIndex]).text(nilai_kanan[currentIndex]);
+                isDelay = true;
+                delayEnd = Date.now() + delayMs;
+                return;
+            }
 
-                currentIndex++;
-                if (currentIndex >= labels.length) {
-                    clearInterval(autoInterval);
-                    $("#pieChart path").removeClass("active");
-                    $("#activeLabel").text("-");
-                    $("#steps").text("-");
+            let seconds = Math.floor(remaining / 1000);
+            let milliseconds = Math.floor((remaining % 1000) / 10);
 
-                    if (typeof onComplete === "function") onComplete();
-                    return;
-                }
+            const timeText =
+                String(seconds).padStart(2, '0') + ":" +
+                String(milliseconds).padStart(2, '0');
 
-                setActive(labels[currentIndex]);
-                $("#steps").text(steps[currentIndex]);
-                endTime = Date.now() + durationMs;
-                remaining = durationMs;
-            } else {
-                let seconds = Math.floor(remaining / 1000);
-                let milliseconds = Math.floor((remaining % 1000) / 10);
-                const timeText = String(seconds).padStart(2, '0') + ":" + String(
-                    milliseconds).padStart(2, '0');
-                $('#' + cellIds[currentIndex]).text(timeText);
+            $('#' + cellIds[currentIndex]).text(timeText);
 
-                const mapping = {
-                    ka1: {
-                        firebaseKey: 'a1',
-                        index: 0
-                    },
-                    ka2: {
-                        firebaseKey: 'a1',
-                        index: 1
-                    },
-                    ka3: {
-                        firebaseKey: 'a1',
-                        index: 2
-                    },
-                    ka4: {
-                        firebaseKey: 'a2',
-                        index: 3
-                    },
-                    ka5: {
-                        firebaseKey: 'a2',
-                        index: 4
-                    },
-                    ka6: {
-                        firebaseKey: 'a2',
-                        index: 5
-                    },
-                    ka7: {
-                        firebaseKey: 'a3',
-                        index: 6
-                    },
-                    ka8: {
-                        firebaseKey: 'a3',
-                        index: 7
-                    },
-                    ka9: {
-                        firebaseKey: 'a3',
-                        index: 8
-                    },
-                    ka10: {
-                        firebaseKey: 'a4',
-                        index: 9
-                    },
-                    ka11: {
-                        firebaseKey: 'a4',
-                        index: 10
-                    },
-                    ka12: {
-                        firebaseKey: 'a4',
-                        index: 11
-                    },
-                    ka13: {
-                        firebaseKey: 'b1',
-                        index: 12
-                    },
-                    ka14: {
-                        firebaseKey: 'b1',
-                        index: 13
-                    },
-                    ka15: {
-                        firebaseKey: 'b1',
-                        index: 14
-                    },
-                    ka16: {
-                        firebaseKey: 'b2',
-                        index: 15
-                    },
-                    ka17: {
-                        firebaseKey: 'b2',
-                        index: 16
-                    },
-                    ka18: {
-                        firebaseKey: 'b2',
-                        index: 17
-                    },
-                    ka19: {
-                        firebaseKey: 'b3',
-                        index: 18
-                    },
-                    ka20: {
-                        firebaseKey: 'b3',
-                        index: 19
-                    },
-                    ka21: {
-                        firebaseKey: 'b3',
-                        index: 20
-                    },
-                    ka22: {
-                        firebaseKey: 'b4',
-                        index: 21
-                    },
-                    ka23: {
-                        firebaseKey: 'b4',
-                        index: 22
-                    },
-                    ka24: {
-                        firebaseKey: 'b4',
-                        index: 23
-                    },
-                };
-
-                const map = mapping[cellIds[currentIndex]];
-                if (map) {
-                    let nilai = dataFirebase[map.firebaseKey] ?? 0;
-                    if (nilai > nilai_kanan[map.index]) {
-                        nilai_kanan[map.index] = nilai;
-                    }
+            const map = mapping[cellIds[currentIndex]];
+            if (map) {
+                let nilai = dataFirebase[map.firebaseKey] ?? 0;
+                if (nilai > nilai_kanan[map.index]) {
+                    nilai_kanan[map.index] = nilai;
                 }
             }
         }, 50);
@@ -357,6 +339,7 @@ $(document).ready(function () {
 
     function pengujian_kiri(onComplete) {
         nilai_kiri = new Array(24).fill(0);
+
         const labels = [
             'A', 'A', 'A', 'AM', 'AM', 'AM', 'M', 'M', 'M',
             'PM', 'PM', 'PM', 'P', 'P', 'P',
@@ -378,8 +361,13 @@ $(document).ready(function () {
         ];
 
         const durationMs = window.durationMs;
+        const delayMs = window.tesDurationMs ?? 1000;
+
         let currentIndex = 0;
         let endTime = Date.now() + durationMs;
+
+        let isDelay = false;
+        let delayEnd = 0;
 
         cellIds.forEach(id => $('#' + id).text('-'));
         $("#pieChart path").removeClass("active");
@@ -388,142 +376,70 @@ $(document).ready(function () {
         setActive(labels[currentIndex]);
         $("#steps").text(steps[currentIndex]);
 
+        const mapping = {
+            ki1: { firebaseKey: 'a1', index: 0 }, ki2: { firebaseKey: 'a1', index: 1 }, ki3: { firebaseKey: 'a1', index: 2 },
+            ki4: { firebaseKey: 'a2', index: 3 }, ki5: { firebaseKey: 'a2', index: 4 }, ki6: { firebaseKey: 'a2', index: 5 },
+            ki7: { firebaseKey: 'a3', index: 6 }, ki8: { firebaseKey: 'a3', index: 7 }, ki9: { firebaseKey: 'a3', index: 8 },
+            ki10: { firebaseKey: 'a4', index: 9 }, ki11: { firebaseKey: 'a4', index: 10 }, ki12: { firebaseKey: 'a4', index: 11 },
+            ki13: { firebaseKey: 'b1', index: 12 }, ki14: { firebaseKey: 'b1', index: 13 }, ki15: { firebaseKey: 'b1', index: 14 },
+            ki16: { firebaseKey: 'b2', index: 15 }, ki17: { firebaseKey: 'b2', index: 16 }, ki18: { firebaseKey: 'b2', index: 17 },
+            ki19: { firebaseKey: 'b3', index: 18 }, ki20: { firebaseKey: 'b3', index: 19 }, ki21: { firebaseKey: 'b3', index: 20 },
+            ki22: { firebaseKey: 'b4', index: 21 }, ki23: { firebaseKey: 'b4', index: 22 }, ki24: { firebaseKey: 'b4', index: 23 },
+        };
+
         const autoInterval = setInterval(() => {
+
+            // 🔴 MODE DELAY
+            if (isDelay) {
+                if (Date.now() >= delayEnd) {
+                    isDelay = false;
+
+                    currentIndex++;
+                    if (currentIndex >= labels.length) {
+                        clearInterval(autoInterval);
+                        $("#pieChart path").removeClass("active");
+                        $("#activeLabel").text("-");
+                        $("#steps").text("-");
+
+                        if (typeof onComplete === "function") onComplete();
+                        return;
+                    }
+
+                    setActive(labels[currentIndex]);
+                    $("#steps").text(steps[currentIndex]);
+                    endTime = Date.now() + durationMs;
+                }
+                return;
+            }
+
+            // 🔵 MODE RUNNING
             let remaining = endTime - Date.now();
 
             if (remaining <= 0) {
                 $('#' + cellIds[currentIndex]).text(nilai_kiri[currentIndex]);
 
-                currentIndex++;
-                if (currentIndex >= labels.length) {
-                    clearInterval(autoInterval);
-                    $("#pieChart path").removeClass("active");
-                    $("#activeLabel").text("-");
-                    $("#steps").text("-");
-                    if (typeof onComplete === "function") onComplete();
-                    return;
-                }
-
-                setActive(labels[currentIndex]);
-                $("#steps").text(steps[currentIndex]);
-                endTime = Date.now() + durationMs;
-                remaining = durationMs;
-            } else {
-                // tampilkan countdown sementara
-                let seconds = Math.floor(remaining / 1000);
-                let milliseconds = Math.floor((remaining % 1000) / 10);
-                const timeText = String(seconds).padStart(2, '0') + ":" + String(
-                    milliseconds).padStart(2, '0');
-                $('#' + cellIds[currentIndex]).text(timeText);
-
-                const mapping = {
-                    ki1: {
-                        firebaseKey: 'a1',
-                        index: 0
-                    },
-                    ki2: {
-                        firebaseKey: 'a1',
-                        index: 1
-                    },
-                    ki3: {
-                        firebaseKey: 'a1',
-                        index: 2
-                    },
-                    ki4: {
-                        firebaseKey: 'a2',
-                        index: 3
-                    },
-                    ki5: {
-                        firebaseKey: 'a2',
-                        index: 4
-                    },
-                    ki6: {
-                        firebaseKey: 'a2',
-                        index: 5
-                    },
-                    ki7: {
-                        firebaseKey: 'a3',
-                        index: 6
-                    },
-                    ki8: {
-                        firebaseKey: 'a3',
-                        index: 7
-                    },
-                    ki9: {
-                        firebaseKey: 'a3',
-                        index: 8
-                    },
-                    ki10: {
-                        firebaseKey: 'a4',
-                        index: 9
-                    },
-                    ki11: {
-                        firebaseKey: 'a4',
-                        index: 10
-                    },
-                    ki12: {
-                        firebaseKey: 'a4',
-                        index: 11
-                    },
-                    ki13: {
-                        firebaseKey: 'b1',
-                        index: 12
-                    },
-                    ki14: {
-                        firebaseKey: 'b1',
-                        index: 13
-                    },
-                    ki15: {
-                        firebaseKey: 'b1',
-                        index: 14
-                    },
-                    ki16: {
-                        firebaseKey: 'b2',
-                        index: 15
-                    },
-                    ki17: {
-                        firebaseKey: 'b2',
-                        index: 16
-                    },
-                    ki18: {
-                        firebaseKey: 'b2',
-                        index: 17
-                    },
-                    ki19: {
-                        firebaseKey: 'b3',
-                        index: 18
-                    },
-                    ki20: {
-                        firebaseKey: 'b3',
-                        index: 19
-                    },
-                    ki21: {
-                        firebaseKey: 'b3',
-                        index: 20
-                    },
-                    ki22: {
-                        firebaseKey: 'b4',
-                        index: 21
-                    },
-                    ki23: {
-                        firebaseKey: 'b4',
-                        index: 22
-                    },
-                    ki24: {
-                        firebaseKey: 'b4',
-                        index: 23
-                    },
-                };
-
-                const map = mapping[cellIds[currentIndex]];
-                if (map) {
-                    let nilai = dataFirebase[map.firebaseKey] ?? 0;
-                    if (nilai > nilai_kiri[map.index]) {
-                        nilai_kiri[map.index] = nilai;
-                    }
-                }
-
+                isDelay = true;
+                delayEnd = Date.now() + delayMs;
+                return;
             }
+
+            let seconds = Math.floor(remaining / 1000);
+            let milliseconds = Math.floor((remaining % 1000) / 10);
+
+            const timeText =
+                String(seconds).padStart(2, '0') + ":" +
+                String(milliseconds).padStart(2, '0');
+
+            $('#' + cellIds[currentIndex]).text(timeText);
+
+            const map = mapping[cellIds[currentIndex]];
+            if (map) {
+                let nilai = dataFirebase[map.firebaseKey] ?? 0;
+                if (nilai > nilai_kiri[map.index]) {
+                    nilai_kiri[map.index] = nilai;
+                }
+            }
+
         }, 50);
     }
     // ======================= Fungsi Pengujian ======================= //
@@ -560,6 +476,9 @@ $(document).ready(function () {
             let ki3 = Number(nilai_kiri[i * 3 + 2]) || 0;
             let maxKiri = Math.max(ki1, ki2, ki3);
 
+            console.log(`Kanan ${i}:`, kr1, kr2, kr3, "=> Max:", maxKanan);
+            console.log(`Kiri ${i}:`, ki1, ki2, ki3, "=> Max:", maxKiri);
+
             maxKananGlobal.push(maxKanan);
             maxKiriGlobal.push(maxKiri);
 
@@ -579,211 +498,6 @@ $(document).ready(function () {
         renderCompositeFormula();
     }
     // ======================= Fungsi normalisasi ======================= //
-
-    // function renderCompositeFormula() {
-    //     const kiri = document.getElementById("formulaKiri");
-    //     const kanan = document.getElementById("formulaKanan");
-    //     const hasil = document.getElementById("hasilComposite");
-
-    //     if (!kiri || !kanan) return;
-
-    //     let formulaKiri, formulaKanan;
-    //     if (maxKananGlobal.length === 8 && maxKiriGlobal.length === 8) {
-    //         let panjang_kanan = parseFloat($('#tungkai_kanan').val()) || 1;
-    //         let panjang_kiri = parseFloat($('#tungkai_kiri').val()) || 1;
-
-    //         let sumKanan = maxKananGlobal.join(" + ");
-    //         let sumKiri = maxKiriGlobal.join(" + ");
-
-    //         // ===============================
-    //         // RUMUS COMPOSITE SCORE DENGAN NILAI MAX YANG SUDAH DIHITUNG
-    //         // ===============================
-    //         // formulaKiri =
-    //         //     `\\( CS_L =
-    //         //                     \\frac{(${sumKiri}) \\times 100}
-    //         //                     {8 \\times ${panjang_kiri}} \\)`;
-
-    //         // formulaKanan =
-    //         //     `\\( CS_R =
-    //         //                     \\frac{(${sumKanan}) \\times 100}
-    //         //                     {8 \\times ${panjang_kanan}} \\)`;
-
-
-    //         const formulaKiriEl = document.getElementById("formulaKiri");
-    //         const formulaKananEl = document.getElementById("formulaKanan");
-
-    //         formulaKiriEl.innerHTML = `<span class="formula">${formulaKiri}</span>`;
-    //         formulaKananEl.innerHTML = `<span class="formula">${formulaKanan}</span>`;
-
-    //         // paksa ukuran font supaya tidak mengikuti class "small"
-    //         formulaKiriEl.style.fontSize = "1.4rem";
-    //         formulaKananEl.style.fontSize = "1.4rem";
-
-    //         if (window.MathJax) {
-    //             MathJax.typesetClear();
-    //             MathJax.typesetPromise([formulaKiriEl, formulaKananEl]).then(() => {
-
-    //                 // paksa MathJax mengikuti lebar container
-    //                 const mjxKiri = formulaKiriEl.querySelector("mjx-container");
-    //                 const mjxKanan = formulaKananEl.querySelector("mjx-container");
-
-    //                 if (mjxKiri) {
-    //                     mjxKiri.style.width = "100%";
-    //                     mjxKiri.style.fontSize = "1.2em";
-    //                 }
-
-    //                 if (mjxKanan) {
-    //                     mjxKanan.style.width = "100%";
-    //                     mjxKanan.style.fontSize = "1.2em";
-    //                 }
-    //             });
-    //         }
-
-    //         // ===============================
-    //         // HITUNG NILAI COMPOSITE SCORE
-    //         // ===============================
-    //         let totalKanan = maxKananGlobal.reduce((a, b) => a + b, 0);
-    //         let totalKiri = maxKiriGlobal.reduce((a, b) => a + b, 0);
-
-    //         csl = (totalKiri / (8 * panjang_kiri)) * 100;
-    //         csr = (totalKanan / (8 * panjang_kanan)) * 100;
-
-    //         // ===============================
-    //         // FUNGSI KATEGORI
-    //         // ===============================
-    //         function kategori(nilai) {
-    //             if (nilai >= 95) return {
-    //                 text: "Sangat Baik",
-    //                 color: "success"
-    //             };
-    //             if (nilai >= 90) return {
-    //                 text: "Baik",
-    //                 color: "primary"
-    //             };
-    //             if (nilai >= 85) return {
-    //                 text: "Cukup",
-    //                 color: "warning"
-    //             };
-    //             return {
-    //                 text: "Kurang",
-    //                 color: "danger"
-    //             };
-    //         }
-
-    //         let kategoriKiri = kategori(csl);
-    //         let kategoriKanan = kategori(csr);
-
-    //         // ===============================
-    //         // HITUNG PERBANDINGAN (Selisih dari ATERIOR)
-    //         // ===============================
-    //         selisih = Math.abs(maxKiriGlobal[0] - maxKananGlobal[0]);
-
-    //         let sisiDominan = maxKiriGlobal[0] > maxKananGlobal[0] ? "Kiri lebih baik" :
-    //             maxKananGlobal[0] > maxKiriGlobal[0] ? "Kanan lebih baik" :
-    //                 "Seimbang";
-
-    //         // ===============================
-    //         // CEK CIDERA
-    //         // ===============================
-    //         let statusCidera = selisih > 4 ? "Cidera" : "Tidak Cidera";
-
-    //         // ===============================
-    //         // TAMPILKAN HASIL
-    //         // ===============================
-    //         if (hasil) {
-    //             $('#hasilCSL').text(csl.toFixed(2) + '%');
-    //             $('#kategoriCSL').html(`
-    //                     <span class="text-${kategoriKiri.color} fw-semibold">
-    //                         ${kategoriKiri.text}
-    //                     </span>
-    //                 `);
-
-    //             $('#hasilCSR').text(csr.toFixed(2) + '%');
-    //             $('#kategoriCSR').html(`
-    //                     <span class="text-${kategoriKanan.color} fw-semibold">
-    //                         ${kategoriKanan.text}
-    //                     </span>
-    //                 `);
-
-    //             hasil.innerHTML = `
-    //                     <div class="text-center my-4">
-    //                         <h3 class="fw-bold mb-1">Keseimbangan Anterior</h3>
-    //                         <small class="text-muted">Selisih dari Anterior</small>
-    //                     </div>
-
-    //                     <div class="bg-light rounded-3 p-3">
-    //                         <div class="row text-center align-items-center">
-
-    //                             <div class="col-12 col-sm-3 mb-2 mb-sm-0 border-start">
-    //                                 <div class="text-muted small">Anterior (A)</div>
-    //                                 <div class="fw-bold fs-6">
-    //                                     <span class="text-primary">${maxKananGlobal[0]?.toFixed(2)}</span>
-    //                                     <span class="mx-1">|</span>
-    //                                     <span class="text-danger">${maxKiriGlobal[0]?.toFixed(2)}</span>
-    //                                 </div>
-    //                             </div>
-
-    //                             <div class="col-12 col-sm-3 border-start">
-    //                                 <div class="text-muted small">Selisih</div>
-    //                                 <div class="fs-5 fw-bold">
-    //                                     ${selisih.toFixed(2)}
-    //                                 </div>
-    //                             </div>
-
-    //                             <div class="col-12 col-sm-3 mb-2 mb-sm-0 border-start">
-    //                                 <div class="text-muted small">Keterangan</div>
-    //                                 <div class="fw-bold">
-    //                                     ${sisiDominan}
-    //                                 </div>
-    //                             </div>
-
-    //                             <div class="col-12 col-sm-3 mb-2 mb-sm-0 border-start">
-    //                                 <div class="text-muted small">Status</div>
-    //                                 <div class="fw-semibold">
-    //                                     ${statusCidera}
-    //                                 </div>
-    //                             </div>
-
-    //                         </div>
-    //                     </div>
-    //                 `;
-    //         }
-
-    //         updateGrafik();
-    //     } else {
-
-    //         // ===============================
-    //         // Rumus Jika Belum Ada Data
-    //         // ===============================
-    //         formulaKiri =
-    //             `\\( \\small CS_L =
-    //                             \\frac{(A_L + AM_L + M_L + PM_L + P_L + PL_L + L_L + AL_L) \\times 100}
-    //                             {8 \\times PT} \\)`;
-
-    //         formulaKanan =
-    //             `\\( \\small CS_R =
-    //                     \\frac{(A_R + AM_R + M_R + PM_R + P_R + PL_R + L_R + AL_R) \\times 100}
-    //                     {8 \\times PT} \\)`;
-
-    //         if (hasil) {
-    //             hasil.innerHTML = "";
-    //         }
-    //     }
-
-    //     // ===============================
-    //     // TAMPILKAN RUMUS
-    //     // ===============================
-    //     kiri.innerHTML = formulaKiri;
-    //     kanan.innerHTML = formulaKanan;
-
-    //     // ===============================
-    //     // RENDER MATHJAX
-    //     // ===============================
-    //     if (window.MathJax) {
-    //         MathJax.typesetClear();
-    //         MathJax.typesetPromise([kiri, kanan]);
-    //     }
-    // }
 
     function renderCompositeFormula() {
         const kiri = document.getElementById("formulaKiri");
@@ -809,7 +523,7 @@ $(document).ready(function () {
 
             csl = (totalKiri / (8 * panjang_kiri)) * 100;
             csr = (totalKanan / (8 * panjang_kanan)) * 100;
-            
+
             // Fungsi kategori
             function kategori(nilai) {
                 if (nilai >= 95) return { text: "Sangat Baik", color: "success" };

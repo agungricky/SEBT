@@ -5,10 +5,11 @@
                  <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                      <a class="navbar-brand brand-logo ms-3" href="index.html">
                          <img src="{{ asset('assets/images/dashboard/logo.png') }}" alt="logo"
-                             style="width:180px; height:auto;">
+                             style="width:180px; height:auto;" />
                      </a>
-                     <a class="navbar-brand brand-logo-mini" href="index.html"><img
-                             src="{{ asset('assets/images/dashboard/logo.png') }}" alt="logo" /></a>
+                     <a class="navbar-brand brand-logo-mini" href="index.html">
+                        <img src="{{ asset('assets/images/dashboard/logo.png') }}" alt="logo" style="width:180px; height:auto;" />
+                    </a>
                  </div>
                  <ul class="navbar-nav navbar-nav-right">
                      <li class="nav-item d-lg-flex d-none me-2">
@@ -60,9 +61,15 @@
                      <div class="modal-body">
 
                          <div class="mb-3">
-                             <label class="form-label">Lama Jeda Waktu (detik)</label>
+                             <label class="form-label">Lama jeda waktu (detik)</label>
                              <input type="number" name="jeda_waktu" class="form-control" id="jeda_waktu"
                                  placeholder="Masukkan jeda waktu" required>
+                         </div>
+
+                         <div class="mb-3">
+                             <label class="form-label">Lama waktu tes (detik)</label>
+                             <input type="number" name="waktu_tes" class="form-control" id="waktu_tes"
+                                 placeholder="Masukkan waktu tes" required>
                          </div>
 
                      </div>

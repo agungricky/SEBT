@@ -128,7 +128,8 @@
 @push('scripts')
     <script>
         window.appConfig = {
-            jeda: {{ Cache::get('jeda_waktu', 2) }}
+            jeda: {{ Cache::get('jeda_waktu', 2) }},
+            tes: {{ Cache::get('waktu_tes', 2) }}
         };
 
         $('.only-number').on('input', function() {
