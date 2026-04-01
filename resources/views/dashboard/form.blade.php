@@ -97,7 +97,7 @@
                         Jalankan Pengujian
                     </button>
 
-                    <button type="button" class="btn btn-primary btn-sm d-none" id="submitData">
+                    <button type="button" class="btn btn-primary btn-sm d-none submitData">
                         Kirim Data
                     </button>
 

@@ -225,65 +225,30 @@ $(document).ready(function () {
         setActive(labels[currentIndex]);
         $("#steps").text(steps[currentIndex]);
 
-        // const mapping = {
-        //     ka1: { firebaseKey: 'a1', index: 0 }, 
-        //     ka2: { firebaseKey: 'a1', index: 1 }, 
-        //     ka3: { firebaseKey: 'a1', index: 2 },
-
-        //     ka4: { firebaseKey: 'b2', index: 3 }, 
-        //     ka5: { firebaseKey: 'a2', index: 4 }, 
-        //     ka6: { firebaseKey: 'a2', index: 5 },
-        //     ka7: { firebaseKey: 'a3', index: 6 }, 
-        //     ka8: { firebaseKey: 'a3', index: 7 }, 
-        //     ka9: { firebaseKey: 'a3', index: 8 },
-        //     ka10: { firebaseKey: 'a4', index: 9 }, 
-        //     ka11: { firebaseKey: 'a4', index: 10 }, 
-        //     ka12: { firebaseKey: 'a4', index: 11 },
-        //     ka13: { firebaseKey: 'b1', index: 12 }, 
-        //     ka14: { firebaseKey: 'b1', index: 13 }, 
-        //     ka15: { firebaseKey: 'b1', index: 14 },
-        //     ka16: { firebaseKey: 'b2', index: 15 }, 
-        //     ka17: { firebaseKey: 'b2', index: 16 }, 
-        //     ka18: { firebaseKey: 'b2', index: 17 },
-        //     ka19: { firebaseKey: 'b3', index: 18 }, 
-        //     ka20: { firebaseKey: 'b3', index: 19 }, 
-        //     ka21: { firebaseKey: 'b3', index: 20 },
-        //     ka22: { firebaseKey: 'b4', index: 21 }, 
-        //     ka23: { firebaseKey: 'b4', index: 22 }, 
-        //     ka24: { firebaseKey: 'b4', index: 23 },
-        // };
-
         const mapping = {
-            ka1: { firebaseKey: 'a1', index: 0 }, 
-            ka2: { firebaseKey: 'a1', index: 1 }, 
+            ka1: { firebaseKey: 'a1', index: 0 },
+            ka2: { firebaseKey: 'a1', index: 1 },
             ka3: { firebaseKey: 'a1', index: 2 },
-
-            ka4: { firebaseKey: 'b1', index: 3 }, 
-            ka5: { firebaseKey: 'b1', index: 4 }, 
+            ka4: { firebaseKey: 'b1', index: 3 },
+            ka5: { firebaseKey: 'b1', index: 4 },
             ka6: { firebaseKey: 'b1', index: 5 },
-
-            ka7: { firebaseKey: 'b2', index: 6 }, 
-            ka8: { firebaseKey: 'b2', index: 7 }, 
+            ka7: { firebaseKey: 'b2', index: 6 },
+            ka8: { firebaseKey: 'b2', index: 7 },
             ka9: { firebaseKey: 'b2', index: 8 },
-
-            ka10: { firebaseKey: 'b3', index: 9 }, 
-            ka11: { firebaseKey: 'b3', index: 10 }, 
+            ka10: { firebaseKey: 'b3', index: 9 },
+            ka11: { firebaseKey: 'b3', index: 10 },
             ka12: { firebaseKey: 'b3', index: 11 },
-
-            ka13: { firebaseKey: 'b4', index: 12 }, 
-            ka14: { firebaseKey: 'b4', index: 13 }, 
+            ka13: { firebaseKey: 'b4', index: 12 },
+            ka14: { firebaseKey: 'b4', index: 13 },
             ka15: { firebaseKey: 'b4', index: 14 },
-
-            ka16: { firebaseKey: 'a4', index: 15 }, 
-            ka17: { firebaseKey: 'a4', index: 16 }, 
+            ka16: { firebaseKey: 'a4', index: 15 },
+            ka17: { firebaseKey: 'a4', index: 16 },
             ka18: { firebaseKey: 'a4', index: 17 },
-
-            ka19: { firebaseKey: 'a3', index: 18 }, 
-            ka20: { firebaseKey: 'a3', index: 19 }, 
+            ka19: { firebaseKey: 'a3', index: 18 },
+            ka20: { firebaseKey: 'a3', index: 19 },
             ka21: { firebaseKey: 'a3', index: 20 },
-
-            ka22: { firebaseKey: 'a2', index: 21 }, 
-            ka23: { firebaseKey: 'a2', index: 22 }, 
+            ka22: { firebaseKey: 'a2', index: 21 },
+            ka23: { firebaseKey: 'a2', index: 22 },
             ka24: { firebaseKey: 'a2', index: 23 },
         };
 
@@ -377,14 +342,30 @@ $(document).ready(function () {
         $("#steps").text(steps[currentIndex]);
 
         const mapping = {
-            ki1: { firebaseKey: 'a1', index: 0 }, ki2: { firebaseKey: 'a1', index: 1 }, ki3: { firebaseKey: 'a1', index: 2 },
-            ki4: { firebaseKey: 'a2', index: 3 }, ki5: { firebaseKey: 'a2', index: 4 }, ki6: { firebaseKey: 'a2', index: 5 },
-            ki7: { firebaseKey: 'a3', index: 6 }, ki8: { firebaseKey: 'a3', index: 7 }, ki9: { firebaseKey: 'a3', index: 8 },
-            ki10: { firebaseKey: 'a4', index: 9 }, ki11: { firebaseKey: 'a4', index: 10 }, ki12: { firebaseKey: 'a4', index: 11 },
-            ki13: { firebaseKey: 'b1', index: 12 }, ki14: { firebaseKey: 'b1', index: 13 }, ki15: { firebaseKey: 'b1', index: 14 },
-            ki16: { firebaseKey: 'b2', index: 15 }, ki17: { firebaseKey: 'b2', index: 16 }, ki18: { firebaseKey: 'b2', index: 17 },
-            ki19: { firebaseKey: 'b3', index: 18 }, ki20: { firebaseKey: 'b3', index: 19 }, ki21: { firebaseKey: 'b3', index: 20 },
-            ki22: { firebaseKey: 'b4', index: 21 }, ki23: { firebaseKey: 'b4', index: 22 }, ki24: { firebaseKey: 'b4', index: 23 },
+            ki1: { firebaseKey: 'a1', index: 0 },
+            ki2: { firebaseKey: 'a1', index: 1 },
+            ki3: { firebaseKey: 'a1', index: 2 },
+            ki4: { firebaseKey: 'b1', index: 3 },
+            ki5: { firebaseKey: 'b1', index: 4 },
+            ki6: { firebaseKey: 'b1', index: 5 },
+            ki7: { firebaseKey: 'b2', index: 6 },
+            ki8: { firebaseKey: 'b2', index: 7 },
+            ki9: { firebaseKey: 'b2', index: 8 },
+            ki10: { firebaseKey: 'b3', index: 9 },
+            ki11: { firebaseKey: 'b3', index: 10 },
+            ki12: { firebaseKey: 'b3', index: 11 },
+            ki13: { firebaseKey: 'b4', index: 12 },
+            ki14: { firebaseKey: 'b4', index: 13 },
+            ki15: { firebaseKey: 'b4', index: 14 },
+            ki16: { firebaseKey: 'a4', index: 15 },
+            ki17: { firebaseKey: 'a4', index: 16 },
+            ki18: { firebaseKey: 'a4', index: 17 },
+            ki19: { firebaseKey: 'a3', index: 18 },
+            ki20: { firebaseKey: 'a3', index: 19 },
+            ki21: { firebaseKey: 'a3', index: 20 },
+            ki22: { firebaseKey: 'a2', index: 21 },
+            ki23: { firebaseKey: 'a2', index: 22 },
+            ki24: { firebaseKey: 'a2', index: 23 },
         };
 
         const autoInterval = setInterval(() => {
@@ -447,6 +428,7 @@ $(document).ready(function () {
     // ======================= Fungsi normalisasi ======================= //
     function normalisasis() {
         $('#hasilPengujian').removeClass('d-none');
+        $('#bottom_simpan').removeClass('d-none');
         let posisi = $('#hasilPengujian').offset().top - 0;
         $('html, body').animate({
             scrollTop: posisi
@@ -476,11 +458,11 @@ $(document).ready(function () {
             let ki3 = Number(nilai_kiri[i * 3 + 2]) || 0;
             let maxKiri = Math.max(ki1, ki2, ki3);
 
-            console.log(`Kanan ${i}:`, kr1, kr2, kr3, "=> Max:", maxKanan);
-            console.log(`Kiri ${i}:`, ki1, ki2, ki3, "=> Max:", maxKiri);
-
             maxKananGlobal.push(maxKanan);
             maxKiriGlobal.push(maxKiri);
+
+            console.log(`Max Kanan ${i}:`, maxKanan);
+            console.log(`Max Kiri ${i}:`, maxKiri);
 
             let persenKanan = (maxKanan / panjang_kanan) * 100;
             let persenKiri = (maxKiri / panjang_kiri) * 100;
@@ -640,7 +622,7 @@ $(document).ready(function () {
         barChartInstance.update();
 
         $('#runTest').addClass('d-none');
-        $('#submitData').removeClass('d-none');
+        $('.submitData').removeClass('d-none');
         $('#kakiImg').attr('src', "/assets/images/dashboard/KAKI2.png");
         $('#text-kaki').text('Tes Selesai');
         $('#nama').prop('disabled', false);
@@ -774,7 +756,7 @@ $(document).ready(function () {
     // ======================= Button Pengujian di Jalankan ======================= //
 
     // ======================= Submit Data ======================= //
-    $('#submitData').on('click', function () {
+    $('.submitData').on('click', function () {
         let btn = $(this);
         btn.prop('disabled', true).text('Mengirim...');
 
@@ -810,7 +792,7 @@ $(document).ready(function () {
                     confirmButtonColor: '#3085d6'
                 });
 
-                $('#submitData').addClass('d-none');
+                $('.submitData').addClass('d-none');
                 $('#runTest').removeClass('d-none');
                 $('#runTest').text('Jalankan Pengujian').prop('disabled', false);
 
@@ -834,6 +816,7 @@ $(document).ready(function () {
                 formData = {};
 
                 $('#hasilPengujian').addClass('d-none');
+                $('#bottom_simpan').addClass('d-none');
             },
             error: function (xhr) {
 

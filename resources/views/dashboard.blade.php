@@ -178,7 +178,27 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row d-none" id="bottom_simpan">
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card shadow-sm">
+                            <div
+                                class="d-flex flex-column flex-md-row justify-content-center gap-md-3 align-items-center p-3 text-center text-md-center">
+
+                                <p class="mb-3 mb-md-0">
+                                    Data tes selesai dan berhasil melakukan kalkulasi. Simpan sekarang?
+                                </p>
+
+                                <button type="button" class="btn btn-primary submitData">
+                                    Simpan Sekarang
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
             @include('layout.footer')
         </div>
     </div>
