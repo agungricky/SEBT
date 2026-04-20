@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\authController;
+use App\Http\Controllers\cekSensorController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\riwayatController;
 use App\Http\Controllers\settingController;
@@ -21,4 +22,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/user', userController::class);
     Route::resource('/riwayat', riwayatController::class);
     Route::get('/export-excel', [TesController::class, 'Excel'])->name('export.excel');
+
+    Route::get('/cek-sensor', [cekSensorController::class, 'index'])->name('ceksensor');
 });

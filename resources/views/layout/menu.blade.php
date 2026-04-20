@@ -16,6 +16,13 @@
                 </a>
             </li>
 
+            <li class="nav-item {{ request()->routeIs('ceksensor') ? 'active' : '' }}">
+                <a href="{{ route('ceksensor') }}">
+                    <i class="mdi mdi-access-point menu-icon"></i>
+                    <span>Cek Sensor</span>
+                </a>
+            </li>
+
             <li class="nav-item d-lg-none">
                 <a href="{{ route('export.excel') }}">
                     <i class="mdi mdi-file-excel menu-icon"></i>
