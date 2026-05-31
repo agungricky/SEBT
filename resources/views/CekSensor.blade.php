@@ -29,7 +29,7 @@
                                                 </span>
 
                                                 <span class="text-default-d3 text-90 text-600">
-                                                    A1
+                                                    A
                                                 </span>
                                                 <span class="mx-1"> ........... </span>
                                                 <span class="ml-auto text-dark-l2 text-nowrap">
@@ -49,7 +49,7 @@
                                                 </span>
 
                                                 <span class="text-default-d3 text-90 text-600">
-                                                    A2
+                                                    AM
                                                 </span>
                                                 <span class="mx-1"> ........... </span>
                                                 <span class="ml-auto text-dark-l2 text-nowrap">
@@ -69,7 +69,7 @@
                                                 </span>
 
                                                 <span class="text-default-d3 text-90 text-600">
-                                                    A3
+                                                    M
                                                 </span>
                                                 <span class="mx-1"> ........... </span>
                                                 <span class="ml-auto text-dark-l2 text-nowrap">
@@ -89,7 +89,7 @@
                                                 </span>
 
                                                 <span class="text-default-d3 text-90 text-600">
-                                                    A4
+                                                    PM
                                                 </span>
                                                 <span class="mx-1"> ........... </span>
                                                 <span class="ml-auto text-dark-l2 text-nowrap">
@@ -111,7 +111,7 @@
                                                 </span>
 
                                                 <span class="text-default-d3 text-90 text-600">
-                                                    B1
+                                                    P
                                                 </span>
                                                 <span class="mx-1"> ........... </span>
                                                 <span class="ml-auto text-dark-l2 text-nowrap">
@@ -131,7 +131,7 @@
                                                 </span>
 
                                                 <span class="text-default-d3 text-90 text-600">
-                                                    B2
+                                                    PL
                                                 </span>
                                                 <span class="mx-1"> ........... </span>
                                                 <span class="ml-auto text-dark-l2 text-nowrap">
@@ -151,7 +151,7 @@
                                                 </span>
 
                                                 <span class="text-default-d3 text-90 text-600">
-                                                    B3
+                                                    L
                                                 </span>
                                                 <span class="mx-1"> ........... </span>
                                                 <span class="ml-auto text-dark-l2 text-nowrap">
@@ -171,7 +171,7 @@
                                                 </span>
 
                                                 <span class="text-default-d3 text-90 text-600">
-                                                    B4
+                                                    AL
                                                 </span>
                                                 <span class="mx-1"> ........... </span>
                                                 <span class="ml-auto text-dark-l2 text-nowrap">
